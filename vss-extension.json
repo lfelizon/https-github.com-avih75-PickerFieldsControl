@@ -1,0 +1,210 @@
+{
+    "manifestVersion": 1,
+    "id": "Picker-Fields-Control",
+    "version": "1.0.14",
+    "name": "Picker Fields Control",
+    "scopes": [
+        "vso.work",
+        "vso.work_write"
+    ],
+    "description": "Let Pick values for field from a specific list",
+    "publisher": "AviHadad",
+    "icons": {
+        "default": "img/logo.png"
+    },
+    "targets": [{
+        "id": "Microsoft.VisualStudio.Services"
+    }],
+    "tags": [
+        "Work Item",
+        "Work Item control",
+        "Usability",
+        "Picker",
+        "List Values"
+    ],
+    "content": {
+        "details": {
+            "path": "details.md"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/avih75/Value_Grouping_Control"
+    },
+    "links": {
+        "support": {
+            "uri": ""
+        },
+        "learn": {
+            "uri": ""
+        },
+        "repository": {
+            "uri": "https://github.com/avih75/Value_Grouping_Control"
+        },
+        "issues": {
+            "uri": ""
+        }
+    },
+    "files": [{
+            "path": "img",
+            "addressable": true
+        },
+        {
+            "path": "scripts",
+            "addressable": true
+        },
+        {
+            "path": "styles",
+            "addressable": true
+        },
+        {
+            "path": "index.html",
+            "addressable": true
+        }
+    ],
+    "categories": [
+        "Plan and track"
+    ],
+    "contributions": [{
+        "id": "Value_Grouping",
+        "description": "Group values from several fields, and calculate new value. regarding the requested functionality",
+        "type": "ms.vss-work-web.work-item-form-control",
+        "targets": [
+            "ms.vss-work-web.work-item-form"
+        ],
+        "properties": {
+            "name": "Plus/minus integer control",
+            "uri": "index.html",
+            "height": 200,
+            "inputs": [{
+                    "id": "FieldQuntity",
+                    "name": "FieldQuntity",
+                    "description": "This field give the controll the number of fields that it need to set. 2 up to 4",
+                    "type": "TextArea",
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "ControlName",
+                    "name": "ControlName",
+                    "description": "This field get the controll name, use for label and getting the infos from storage",
+                    "type": "TextArea",
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "FieldName1",
+                    "name": "FieldName1",
+                    "description": "The first field name",
+                    "type": "TextArea",
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "Field1",
+                    "name": "Field1",
+                    "description": "The first field workItem Field",
+                    "type": "WorkItemField",
+                    "properties": {
+                        "workItemFieldTypes": [
+                            "Integer",
+                            "Double",
+                            "String"
+                        ]
+                    },
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "FieldName2",
+                    "name": "FieldName2",
+                    "description": "The second field name",
+                    "type": "TextArea",
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "Field2",
+                    "name": "Field2",
+                    "description": "The second field workItem Field",
+                    "type": "WorkItemField",
+                    "properties": {
+                        "workItemFieldTypes": [
+                            "Integer",
+                            "Double",
+                            "String"
+                        ]
+                    },
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "FieldName3",
+                    "name": "FieldName3",
+                    "description": "The therd field name",
+                    "type": "TextArea",
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "Field3",
+                    "name": "Field3",
+                    "description": "The therd field workItem Field",
+                    "type": "WorkItemField",
+                    "properties": {
+                        "workItemFieldTypes": [
+                            "Integer",
+                            "Double",
+                            "String"
+                        ]
+                    },
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "FieldName4",
+                    "name": "FieldName4",
+                    "description": "The forth field name",
+                    "type": "TextArea",
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                },
+                {
+                    "id": "Field4",
+                    "name": "Field4",
+                    "description": "The forth field workItem Field",
+                    "type": "WorkItemField",
+                    "properties": {
+                        "workItemFieldTypes": [
+                            "Integer",
+                            "Double",
+                            "String"
+                        ]
+                    },
+                    "validation": {
+                        "dataType": "String",
+                        "isRequired": true
+                    }
+                }
+            ]
+        }
+    }]
+}
