@@ -3,6 +3,7 @@ import { Model } from "./PickerFieldModel";
 import { View } from "./PickerFieldView";
 import { ErrorView } from "./errorView";
 import * as Q from "q";
+import { RetriveValue } from "./StorageHelper";
 export class Controller {
     private _fieldsQuantity: string = "";
     private _controlName: string = "";
@@ -19,6 +20,7 @@ export class Controller {
     private _view: View;
 
     constructor() {
+
         this._initialize();
     }
     private _initialize(): void {
@@ -33,6 +35,9 @@ export class Controller {
         this._fieldValue3 = this._inputs["Field3"];
         this._fieldName4 = this._inputs["FieldName4"];
         this._fieldValue4 = this._inputs["Field4"];
+
+
+
         WitService.WorkItemFormService.getService().then(
             (service) => {
                 Q.spread(
@@ -63,17 +68,18 @@ export class Controller {
                         this.updateView(fieldValue3, 'Field3')
                         this.updateView(fieldName4, 'FieldName4')
                         this.updateView(fieldValue4, 'Field4')
-                        this._model = new Model(fieldsQuantity, controlName, fieldName1, fieldValue1, fieldName2,
-                            fieldValue2, fieldName3, fieldValue3, fieldName4, fieldValue4);
-                        this._view = new View(this._model, (val, fieldName) => {
-                            //this.updateView(val, fieldName);
-                            // service.getFieldValues([this._fieldsQuantity, this._fieldName1, this._fieldValue1, this._fieldName2, this._fieldValue2,
-                            // this._fieldName3, this._fieldValue3, this._fieldName4, this._fieldValue4
-                            // ]).then((valuesList: IDictionaryStringTo<any>) => {
-                            //     //         this.updateView(this._model.getCurrentValue('valuesGrouped'), 'valuesGrouped');
-                            // })
+                        RetriveValue("controlName").then((doc) => {
+                            this._model = new Model(fieldsQuantity, controlName, fieldName1, fieldValue1, fieldName2,
+                                fieldValue2, fieldName3, fieldValue3, fieldName4, fieldValue4);
+                            this._view = new View(doc, this._model, (val, fieldName) => {
+                                //this.updateView(val, fieldName);
+                                // service.getFieldValues([this._fieldsQuantity, this._fieldName1, this._fieldValue1, this._fieldName2, this._fieldValue2,
+                                // this._fieldName3, this._fieldValue3, this._fieldName4, this._fieldValue4
+                                // ]).then((valuesList: IDictionaryStringTo<any>) => {
+                                //     //         this.updateView(this._model.getCurrentValue('valuesGrouped'), 'valuesGrouped');
+                                // })
+                            })
                         })
-
                     }, this._handleError
                 ).then(null, this._handleError);
             },

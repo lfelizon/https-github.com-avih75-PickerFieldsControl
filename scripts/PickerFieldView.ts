@@ -1,5 +1,7 @@
 import * as WitService from "TFS/WorkItemTracking/Services";
-import { Model, FieldValues } from "./PickerFieldModel";
+import { Model } from "./PickerFieldModel";
+import { FieldValues, DocRow } from "./StorageHelper";
+
 
 
 export class View {
@@ -8,13 +10,13 @@ export class View {
     private values2: Array<FieldValues>;
     private values3: Array<FieldValues>;
     private values4: Array<FieldValues>;
-    constructor(private model: Model, private onInputChanged: Function) {//, private onUpTick: Function, private onDownTick: Function) {
+    constructor(private doc: DocRow, private model: Model, private onInputChanged: Function) {//, private onUpTick: Function, private onDownTick: Function) {
         this.pickerFieldModel = model;
         this.values1 = new Array<FieldValues>();
         this.values2 = new Array<FieldValues>();
         this.values3 = new Array<FieldValues>();
         this.values4 = new Array<FieldValues>();
-        this.GetValuse();
+        this.GetValuse(doc);
         this.CreateView();
     }
     private CreateView() {
@@ -43,22 +45,26 @@ export class View {
         }
         return newSelect;
     }
-    private GetValuse() {
-        this.values1.push({ Depend: "", Value: "Hadad" })
-        this.values1.push({ Depend: "", Value: "Sheler" })
-        this.values2.push({ Depend: "Hadad", Value: "Avi" })
-        this.values2.push({ Depend: "Hadad", Value: "Riki" })
-        this.values2.push({ Depend: "Sheler", Value: "Moshe" })
-        this.values2.push({ Depend: "Sheler", Value: "Dana" })
-        this.values3.push({ Depend: "Avi", Value: "Pans" })
-        this.values3.push({ Depend: "Riki", Value: "Dress" })
-        this.values3.push({ Depend: "Dana", Value: "Shirt" })
-        this.values3.push({ Depend: "Moshe", Value: "Pans" })
-        this.values4.push({ Depend: "Pans", Value: "Long" })
-        this.values4.push({ Depend: "Pans", Value: "Short" })
-        this.values4.push({ Depend: "Shirt", Value: "T" })
-        this.values4.push({ Depend: "Dress", Value: "Red" })
-        this.values4.push({ Depend: "Dress", Value: "Blue" })
+    private GetValuse(doc: DocRow) {
+        this.values1=doc.values1;
+        this.values2=doc.values2;
+        this.values3=doc.values3;
+        this.values4=doc.values4;
+        // this.values1.push({ Depend: "", Value: "Hadad" })
+        // this.values1.push({ Depend: "", Value: "Sheler" })
+        // this.values2.push({ Depend: "Hadad", Value: "Avi" })
+        // this.values2.push({ Depend: "Hadad", Value: "Riki" })
+        // this.values2.push({ Depend: "Sheler", Value: "Moshe" })
+        // this.values2.push({ Depend: "Sheler", Value: "Dana" })
+        // this.values3.push({ Depend: "HadadAvi", Value: "Pans" })
+        // this.values3.push({ Depend: "HadadRiki", Value: "Dress" })
+        // this.values3.push({ Depend: "ShelrDana", Value: "Shirt" })
+        // this.values3.push({ Depend: "ShelrMoshe", Value: "Pans" })
+        // this.values4.push({ Depend: "ShelrMoshePans", Value: "Long" })
+        // this.values4.push({ Depend: "HadadAviPans", Value: "Short" })
+        // this.values4.push({ Depend: "ShelrDanaShirt", Value: "T" })
+        // this.values4.push({ Depend: "HadadRikiDress", Value: "Red" })
+        // this.values4.push({ Depend: "HadadRikiDress", Value: "Blue" })
     }
     private OnSelectChange(fieldNumber: number, eventObject: JQueryEventObject) {
         for (let i = fieldNumber + 1; i < 5; i++) {
@@ -88,7 +94,7 @@ export class View {
             }
             values.forEach(value => {
                 if (value.Depend == select) {
-                    nextSelect.append(new Option(value.Value)); 
+                    nextSelect.append(new Option(value.Value));
                 }
             });
             nextSelect.val('');

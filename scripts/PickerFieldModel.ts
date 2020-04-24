@@ -1,16 +1,4 @@
-import * as StoregService2 from "VSS/Service";
-import * as StoregService from "VSS/SDK/Services/ExtensionData";
-
-export interface FieldValues {
-    Depend: string;
-    Value: string;
-}
-export interface DocRow {
-    values1: Array<FieldValues>;
-    values2: Array<FieldValues>;
-    values3: Array<FieldValues>;
-    values4: Array<FieldValues>;
-}
+import { DocRow, FieldValues, RetriveValue, StoreValue } from "./StorageHelper";
 
 export class Model {
     public fieldsQuantity: string;
@@ -36,7 +24,7 @@ export class Model {
         this.fieldValue3 = fieldValue3;
         this.fieldName4 = fieldName4;
         this.fieldValue4 = fieldValue4;
-        this.GetListFromStorage(controlName);
+        //this.GetListFromStorage("controlName");
     }
     public setCurrentValue(value: string, fieldName: string) {
         if (value === undefined) {
@@ -106,44 +94,32 @@ export class Model {
             return this.fieldValue4;
         }
     }
-    public GetListFromStorage(controlName: string, collectionName: string) {
-        VSS.getService(VSS.getContribution().id).then(function(dataService) {  //<IServiceContribution>
-            // Set a user-scoped preference
-            dataService.setValue("pref1", 12345, {scopeType: "User"}).then(function(value) {
-                console.log("User preference value is " + value);
-            });		
-            // Get an organization-scoped document in a collection
-            dataService.getDocument("MyCollection", "SomeDocumentId").then(function(doc) {
-                console.log("Document is " + JSON.stringify(doc, null, 2));
-            });
-        });
-        
-       
-        
-        let service = StoregService.ExtensionDataService.getServiceInstance();
-        let doc: DocRow = {
-            values1: new Array<FieldValues>(),
-            values2: new Array<FieldValues>(),
-            values3: new Array<FieldValues>(),
-            values4: new Array<FieldValues>(),
-        }
-        doc.values1.push({ Depend: "", Value: "Hadad" })
-        doc.values1.push({ Depend: "", Value: "Sheler" })
-        doc.values2.push({ Depend: "Hadad", Value: "Avi" })
-        doc.values2.push({ Depend: "Hadad", Value: "Riki" })
-        doc.values2.push({ Depend: "Sheler", Value: "Moshe" })
-        doc.values2.push({ Depend: "Sheler", Value: "Dana" })
-        doc.values3.push({ Depend: "Avi", Value: "Pans" })
-        doc.values3.push({ Depend: "Riki", Value: "Dress" })
-        doc.values3.push({ Depend: "Dana", Value: "Shirt" })
-        doc.values3.push({ Depend: "Moshe", Value: "Pans" })
-        doc.values4.push({ Depend: "Pans", Value: "Long" })
-        doc.values4.push({ Depend: "Pans", Value: "Short" })
-        doc.values4.push({ Depend: "Shirt", Value: "T" })
-        doc.values4.push({ Depend: "Dress", Value: "Red" })
-        doc.values4.push({ Depend: "Dress", Value: "Blue" })
-        service.setDocument(collectionName, doc)
-        let getDoc = service.getDocument(collectionName)
-    }
-
+    // public GetListFromStorage(controlName: string) {
+    //     let doc: DocRow = {
+    //         values1: new Array<FieldValues>(),
+    //         values2: new Array<FieldValues>(),
+    //         values3: new Array<FieldValues>(),
+    //         values4: new Array<FieldValues>(),
+    //     }
+    //     doc.values1.push({ Depend: "", Value: "Hadad" })
+    //     doc.values1.push({ Depend: "", Value: "Sheler" })
+    //     doc.values2.push({ Depend: "Hadad", Value: "Avi" })
+    //     doc.values2.push({ Depend: "Hadad", Value: "Riki" })
+    //     doc.values2.push({ Depend: "Sheler", Value: "Moshe" })
+    //     doc.values2.push({ Depend: "Sheler", Value: "Dana" })
+    //     doc.values3.push({ Depend: "Avi", Value: "Pans" })
+    //     doc.values3.push({ Depend: "Riki", Value: "Dress" })
+    //     doc.values3.push({ Depend: "Dana", Value: "Shirt" })
+    //     doc.values3.push({ Depend: "Moshe", Value: "Pans" })
+    //     doc.values4.push({ Depend: "Pans", Value: "Long" })
+    //     doc.values4.push({ Depend: "Pans", Value: "Short" })
+    //     doc.values4.push({ Depend: "Shirt", Value: "T" })
+    //     doc.values4.push({ Depend: "Dress", Value: "Red" })
+    //     doc.values4.push({ Depend: "Dress", Value: "Blue" })
+    //     StoreValue(controlName, doc);
+    //     return RetriveValue(controlName);
+    //     // RetriveValue(controlName).then((doc2) => {
+    //     //     let x = doc2
+    //     // });
+    // }
 }
