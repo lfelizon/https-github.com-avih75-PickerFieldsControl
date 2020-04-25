@@ -2,11 +2,10 @@ import * as WitService from "TFS/WorkItemTracking/Services";
 import { Model } from "./PickerFieldModel";
 import { FieldValues, FieldsValuesList, StoreValueList } from "./StorageHelper";
 
-
-
 export class View {
     private pickerFieldModel: Model;
     constructor(private model: Model, private onInputChanged: Function) {
+        this.pickerFieldModel = model;
         this.CreateView();
     }
     private CreateView() {
@@ -14,17 +13,66 @@ export class View {
         var container = $("<div />");
         container.addClass("container");
         for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
-            container.append(this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
+            //container.append(this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
+            if (this.model.fieldsValue[0] == "") {
+                container.append(this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
+            }
+            else {
+                container.append(this.AddSelectFieldWithValues(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
+            }
         }
-        // container.append(this.AddSelectField(this.pickerFieldModel.fieldName1, this.pickerFieldModel.fieldValue1, 1, this.values1));
-        // container.append(this.AddSelectField(this.pickerFieldModel.fieldName2, this.pickerFieldModel.fieldValue2, 2)); 
+        // for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
+        //     if (this.pickerFieldModel.fieldsValue[index] != "") {
+        //         this.SetFirstValues(index + 1, this.pickerFieldModel.fieldsValue[index]);
+        //     }
+        // }
         $("body").append(container);
     }
-    private AddSelectField(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues> = undefined) {
+    private AddSelectFieldWithValues(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues>) {
         let div = $("<div />");
+        let label = $("<textBox />");
+        label.text(fieldName);
+        label.addClass("label")
         let newSelect = $("<select />");
         newSelect.addClass("selectField");
-        newSelect.attr("id", fieldNumber)
+        newSelect.attr("id", fieldNumber);
+        newSelect.change((eventObject: JQueryEventObject) => this.OnSelectChange(fieldNumber, eventObject))
+        if (fieldNumber == 1) {
+            values.forEach(value => {
+                newSelect.append(new Option(value.Value));
+            });
+        }
+        else if (fieldNumber == 2) {
+            values.forEach(value => {
+                if (value.Depend == this.model.fieldsValue[0])
+                    newSelect.append(new Option(value.Value));
+            });
+        }
+        else if (fieldNumber == 3) {
+            values.forEach(value => {
+                if (value.Depend == this.model.fieldsValue[0] + this.model.fieldsValue[1])
+                    newSelect.append(new Option(value.Value));
+            });
+        }
+        else {
+            values.forEach(value => {
+                if (value.Depend == this.model.fieldsValue[0] + this.model.fieldsValue[1] + this.model.fieldsValue[2])
+                    newSelect.append(new Option(value.Value));
+            });
+        }
+        newSelect.val(fieldValue);
+        div.append(label);
+        div.append(newSelect);
+        return div;
+    }
+    private AddSelectField(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues>) {
+        let div = $("<div />");
+        let newSelect = $("<select />");
+        let label = $("<textBox />");
+        label.text(fieldName);
+        label.addClass("label")
+        newSelect.addClass("selectField");
+        newSelect.attr("id", fieldNumber);
         newSelect.change((eventObject: JQueryEventObject) => this.OnSelectChange(fieldNumber, eventObject))
         if (fieldNumber == 1) {
             values.forEach(value => {
@@ -35,21 +83,47 @@ export class View {
         else {
             newSelect.attr("disabled", "true");
         }
+        newSelect.val(fieldValue);
+        div.append(label);
         div.append(newSelect);
         return div;
     }
-    private OnSelectChange(fieldNumber: number, eventObject: JQueryEventObject) {
+    // private SetFirstValues(fieldNumber: number, fieldValue: string) {
+    //     let select = $("#" + fieldNumber);
+    //     //select.val(fieldValue);
+    //     select.filter(function () {
+    //         //may want to use $.trim in here
+    //         return $(this).text() == fieldValue;
+    //     }).prop('selected', true);
+    //     select.removeAttr("disabled");
+    //     this.OnSelectChange(fieldNumber)
+    // }
+    private OnSelectChange(fieldNumber: number, eventObject: JQueryEventObject = undefined) {
         for (let i = fieldNumber + 1; i < 5; i++) {
             let select = $("#" + i)
             select.attr("disabled", "true");
             select.find('option').remove().end();
             select.val('');
+            this.model.fieldsValue[fieldNumber] = "";
         }
+        let select: string = $("#" + fieldNumber).children("option:selected").val();
+        this.model.fieldsValue[fieldNumber - 1] = select;
+        //if (fieldNumber == 4) {
+        //this.updateWorkItem(fieldNumber, select);
+        this.updateWorkItem();
+        //}
         if (fieldNumber < 4) {
-            let select: string = $("#" + fieldNumber).children("option:selected").val();
+            if (fieldNumber > 1) {
+                let prevSelect: string = $("#" + (fieldNumber - 1)).children("option:selected").val();
+                this.model.fieldValuesList.FieldsLists[fieldNumber - 2].forEach(value => {
+                    if (value.Value == prevSelect) {
+                        select = value.Depend + prevSelect + select;
+                    }
+                });
+            }
             let nextSelect = $("#" + (fieldNumber + 1))
             nextSelect.find('option').remove().end();
-            this.model.fieldValuesList[fieldNumber + 1].forEach(value => {
+            this.model.fieldValuesList.FieldsLists[fieldNumber].forEach(value => {
                 if (value.Depend == select) {
                     nextSelect.append(new Option(value.Value));
                 }
@@ -58,10 +132,28 @@ export class View {
             nextSelect.removeAttr("disabled");
         }
     }
-    // private inputChanged(field: string, evnt: JQueryKeyEventObject) {
-    //     let newValue = $(evnt.target).val();
-    //     this.onInputChanged(newValue, field);
-
+    private updateWorkItem() {
+        WitService.WorkItemFormService.getService().then(
+            (service) => {
+                service.setFieldValue(this.model.fieldsRefName[0], this.model.fieldsValue[0]).then(() => {
+                    service.setFieldValue(this.model.fieldsRefName[1], this.model.fieldsValue[1]).then(() => {
+                        service.setFieldValue(this.model.fieldsRefName[2], this.model.fieldsValue[2]).then(() => {
+                            service.setFieldValue(this.model.fieldsRefName[3], this.model.fieldsValue[3]);
+                        })
+                    })
+                });
+            }
+        );
+    }
+    // private updateWorkItem(fieldNumber: number, value: string) {
+    //     WitService.WorkItemFormService.getService().then(
+    //         (service) => {
+    //             service.setFieldValue(this.model.fieldsRefName[fieldNumber - 1], value).then(() => {
+    //                 //this._model.setCurrentValue(value, fieldName);
+    //                 //this._view.Update(value, fieldName);
+    //             });
+    //         }
+    //     );
     // }
     // public Update(value: string, fieldName: string) {
     //     this.valuesList[fieldName] = String(value);

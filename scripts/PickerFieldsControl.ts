@@ -20,7 +20,6 @@ export class Controller {
     private _view: View;
 
     constructor() {
-
         this._initialize();
     }
     private _initialize(): void {
@@ -40,37 +39,36 @@ export class Controller {
             (service) => {
                 Q.spread(
                     [
-                        service.getFieldValue(this._fieldsQuantity),
-                        service.getFieldValue(this._controlName),
-                        service.getFieldValue(this._fieldName1),
+                        this._fieldsQuantity,
+                        this._controlName,
+                        this._fieldName1,
                         service.getFieldValue(this._fieldValue1),
-                        service.getFieldValue(this._fieldName2),
+                        this._fieldValue1,
+                        this._fieldName2,
                         service.getFieldValue(this._fieldValue2),
-                        service.getFieldValue(this._fieldName3),
+                        this._fieldValue2,
+                        this._fieldName3,
                         service.getFieldValue(this._fieldValue3),
-                        service.getFieldValue(this._fieldName4),
-                        service.getFieldValue(this._fieldValue4)
+                        this._fieldValue3,
+                        this._fieldName4,
+                        service.getFieldValue(this._fieldValue4),
+                        this._fieldValue4
                     ],
                     (fieldsQuantity: string, controlName: string,
-                        fieldName1: string, fieldValue1: string,
-                        fieldName2: string, fieldValue2: string,
-                        fieldName3: string, fieldValue3: string,
-                        fieldName4: string, fieldValue4: string) => {
-                        this.updateView(fieldsQuantity, 'FieldQuntity')
-                        this.updateView(fieldsQuantity, 'ControlName')
-                        this.updateView(fieldName1, 'FieldName1')
+                        fieldName1: string, fieldValue1: string, fieldRefName1: string,
+                        fieldName2: string, fieldValue2: string, fieldRefName2: string,
+                        fieldName3: string, fieldValue3: string, fieldRefName3: string,
+                        fieldName4: string, fieldValue4: string, fieldRefName4: string) => {
                         this.updateView(fieldValue1, 'Field1')
-                        this.updateView(fieldName2, 'FieldName2')
                         this.updateView(fieldValue2, 'Field2')
-                        this.updateView(fieldName3, 'FieldName3')
                         this.updateView(fieldValue3, 'Field3')
-                        this.updateView(fieldName4, 'FieldName4')
                         this.updateView(fieldValue4, 'Field4')
-                        //RetriveValue("controlName").then((doc) => {
-                        RetriveValueList("Piker1").then((doc) => {
-                            this._model = new Model(fieldsQuantity, controlName, fieldName1, fieldValue1, fieldName2,
-                                fieldValue2, fieldName3, fieldValue3, fieldName4, fieldValue4, doc);
-                            //this._view = new View(doc, this._model, (val, fieldName) => {
+                        RetriveValueList(controlName).then((doc) => {
+                            this._model = new Model(fieldsQuantity, controlName, doc,
+                                fieldName1, fieldValue1, fieldRefName1,
+                                fieldName2, fieldValue2, fieldRefName2,
+                                fieldName3, fieldValue3, fieldRefName3,
+                                fieldName4, fieldValue4, fieldRefName4);
                             this._view = new View(this._model, (val, fieldName) => {
                                 //this.updateView(val, fieldName);
                                 // service.getFieldValues([this._fieldsQuantity, this._fieldName1, this._fieldValue1, this._fieldName2, this._fieldValue2,
