@@ -3,7 +3,7 @@ import { Model } from "./PickerFieldModel";
 import { View } from "./PickerFieldView";
 import { ErrorView } from "./errorView";
 import * as Q from "q";
-import { RetriveValue } from "./StorageHelper";
+import { RetriveValue, RetriveValueList } from "./StorageHelper";
 export class Controller {
     private _fieldsQuantity: string = "";
     private _controlName: string = "";
@@ -36,8 +36,6 @@ export class Controller {
         this._fieldName4 = this._inputs["FieldName4"];
         this._fieldValue4 = this._inputs["Field4"];
 
-
-
         WitService.WorkItemFormService.getService().then(
             (service) => {
                 Q.spread(
@@ -68,10 +66,12 @@ export class Controller {
                         this.updateView(fieldValue3, 'Field3')
                         this.updateView(fieldName4, 'FieldName4')
                         this.updateView(fieldValue4, 'Field4')
-                        RetriveValue("controlName").then((doc) => {
+                        //RetriveValue("controlName").then((doc) => {
+                        RetriveValueList("controlName").then((doc) => {
                             this._model = new Model(fieldsQuantity, controlName, fieldName1, fieldValue1, fieldName2,
-                                fieldValue2, fieldName3, fieldValue3, fieldName4, fieldValue4);
-                            this._view = new View(doc, this._model, (val, fieldName) => {
+                                fieldValue2, fieldName3, fieldValue3, fieldName4, fieldValue4, doc);
+                            //this._view = new View(doc, this._model, (val, fieldName) => {
+                            this._view = new View(this._model, (val, fieldName) => {
                                 //this.updateView(val, fieldName);
                                 // service.getFieldValues([this._fieldsQuantity, this._fieldName1, this._fieldValue1, this._fieldName2, this._fieldValue2,
                                 // this._fieldName3, this._fieldValue3, this._fieldName4, this._fieldValue4
@@ -93,7 +93,7 @@ export class Controller {
         WitService.WorkItemFormService.getService().then(
             (service) => {
                 service.setFieldValue(fieldName, value).then(() => {
-                    this._model.setCurrentValue(value, fieldName);
+                    //this._model.setCurrentValue(value, fieldName);
                     //this._view.Update(value, fieldName);
                 }, this._handleError);
             },
