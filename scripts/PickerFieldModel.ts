@@ -1,11 +1,11 @@
-import { DocRow, FieldValues, RetriveValue, StoreValue, FieldsValuesList } from "./StorageHelper";
+import { FieldValues, FieldsValuesList } from "./StorageHelper";
 
 export class Model {
     public fieldValuesList: FieldsValuesList;
     public fieldsQuantity: string;
     public controlName: string;
     public fieldsName: Array<string>;
-    public fieldsValue: Array<string>; 
+    public fieldsValue: Array<string>;
 
     constructor(fieldsQuantity: string, controlName: string, fieldName1: string, fieldValue1: string, fieldName2: string, fieldValue2: string,
         fieldName3: string, fieldValue3: string, fieldName4: string, fieldValue4: string, fieldValuesList: FieldsValuesList) {

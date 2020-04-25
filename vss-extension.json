@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Picker-Fields-Control",
-    "version": "1.0.28",
+    "version": "1.0.30",
     "name": "Picker Fields Control",
     "scopes": [
         "vso.work",

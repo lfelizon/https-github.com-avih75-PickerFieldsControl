@@ -1,6 +1,6 @@
 import * as WitService from "TFS/WorkItemTracking/Services";
 import { Model } from "./PickerFieldModel";
-import { FieldValues, DocRow, FieldsValuesList, StoreValue, StoreValueList } from "./StorageHelper";
+import { FieldValues, FieldsValuesList, StoreValueList } from "./StorageHelper";
 
 
 

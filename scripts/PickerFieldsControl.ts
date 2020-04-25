@@ -3,7 +3,7 @@ import { Model } from "./PickerFieldModel";
 import { View } from "./PickerFieldView";
 import { ErrorView } from "./errorView";
 import * as Q from "q";
-import { RetriveValue, RetriveValueList } from "./StorageHelper";
+import { RetriveValueList } from "./StorageHelper";
 export class Controller {
     private _fieldsQuantity: string = "";
     private _controlName: string = "";
@@ -67,7 +67,7 @@ export class Controller {
                         this.updateView(fieldName4, 'FieldName4')
                         this.updateView(fieldValue4, 'Field4')
                         //RetriveValue("controlName").then((doc) => {
-                        RetriveValueList("controlName").then((doc) => {
+                        RetriveValueList("Piker1").then((doc) => {
                             this._model = new Model(fieldsQuantity, controlName, fieldName1, fieldValue1, fieldName2,
                                 fieldValue2, fieldName3, fieldValue3, fieldName4, fieldValue4, doc);
                             //this._view = new View(doc, this._model, (val, fieldName) => {
