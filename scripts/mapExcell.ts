@@ -9,11 +9,11 @@ export class ExcellConverter {
         alert("Hello, world");
     }
     private LoaFile() {
-        var input = $('<input/>')
-            .attr('type', "file")
-            .attr('name', "file")
-            .attr('id', "someName");
-        input.click();
+        // var input = $('<input/>')
+        //     .attr('type', "file")
+        //     .attr('name', "file")
+        //     .attr('id', "someName");
+        // input.click();
         // readXlsxFile('/path/to/file').then((rows) => {
         //     rows.forEach(row => {
         //         row.forEach(element => {
