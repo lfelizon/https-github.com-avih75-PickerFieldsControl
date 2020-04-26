@@ -1,11 +1,11 @@
-import { FieldsValuesList, StoreValueList } from "./StorageHelper";
-const readXlsxFile = require('read-excel-file/node');
+//import { FieldsValuesList, StoreValueList } from "./StorageHelper";
+//const readXlsxFile = require('read-excel-file/node');
 export class ExcellConverter {
-    fieldsValuesList: FieldsValuesList;
+    //fieldsValuesList: FieldsValuesList;
     constructor() {
         this.LoaFile();
         this.MapFile();
-        this.PushDoc("controlName");
+        //this.PushDoc("controlName");
         alert("Hello, world");
     }
     private LoaFile() {
@@ -27,8 +27,8 @@ export class ExcellConverter {
     private MapFile() {
 
     }
-    private PushDoc(controlName: string) {
-        StoreValueList(controlName, this.fieldsValuesList)
-    }
+    // private PushDoc(controlName: string) {
+    //     StoreValueList(controlName, this.fieldsValuesList)
+    // }
 }
 //module.exports = ExcellConverter;
