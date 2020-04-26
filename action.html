@@ -9,21 +9,32 @@
 
 <body>
     <script src="scripts/VSS.SDK.min.js"></script>
-    <script src="scripts/mapExcell.js"></script>
+
     <script>
-        // import {
-        //     ExcellConverter
-        // } from './scripts/mapExcell.js'
-        VSS.init();
-        let menuContributionHandler = (function() {
-            "use strict";
-            return {
-                execute: function(actionContext) {
-                    let mapExcell = new ExcellConverter();
-                }
-            };
-        }());
-        VSS.register("myAction", menuContributionHandler);
+        // VSS.init();
+        // let menuContributionHandler = (function() {
+        //     "use strict";
+        //     return {
+        //         execute: maping(actionContext)
+        //             // function(actionContext) {
+        //             //     alert("Hello, world");
+        //             // }
+        //     };
+        // }());
+        // VSS.register("myAction", menuContributionHandler);
+        VSS.init({
+            explicitNotifyLoaded: true,
+            usePlatformScripts: true,
+            // moduleLoaderConfig: {
+            //     paths: {
+            //         "moment": "lib/moment.min"
+            //     }
+            // }
+        });
+        VSS.require(["scripts/mapExcell"], function(data) {
+            // Loading succeeded
+            VSS.notifyLoadSucceeded();
+        });
     </script>
 </body>
 

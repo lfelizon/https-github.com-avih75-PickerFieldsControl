@@ -1,14 +1,25 @@
 //import { FieldsValuesList, StoreValueList } from "./StorageHelper";
 //const readXlsxFile = require('read-excel-file/node');
-export class ExcellConverter {
-    //fieldsValuesList: FieldsValuesList;
-    constructor() {
-        this.LoaFile();
-        this.MapFile();
-        //this.PushDoc("controlName");
-        alert("Hello, world");
-    }
-    private LoaFile() {
+var provider = (actionContext) => {
+    return {
+        execute: (LoadedArgs: any) => {
+            alert(actionContext + " , world1 , " + LoadedArgs);
+        },
+    };
+};
+
+VSS.register(VSS.getContribution().id, provider);
+
+
+
+// export function ExcellConverter() {
+//fieldsValuesList: FieldsValuesList;
+// constructor() {
+//     this.LoaFile();
+//     this.MapFile();
+//this.PushDoc("controlName");
+// }
+    // private LoaFile() {
         // var input = $('<input/>')
         //     .attr('type', "file")
         //     .attr('name', "file")
@@ -23,12 +34,12 @@ export class ExcellConverter {
         //     // `rows` is an array of rows
         //     // each row being an array of cells.
         // })
-    }
-    private MapFile() {
+    // }
+    // private MapFile() {
 
-    }
+    // }
     // private PushDoc(controlName: string) {
     //     StoreValueList(controlName, this.fieldsValuesList)
     // }
-}
+// }
 //module.exports = ExcellConverter;
