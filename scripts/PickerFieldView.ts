@@ -6,6 +6,7 @@ export class View {
     private pickerFieldModel: Model;
     constructor(private model: Model, private onInputChanged: Function) {
         this.pickerFieldModel = model;
+        this.StoreListToStorage(model.controlName);
         this.CreateView();
     }
     private CreateView() {
@@ -167,18 +168,22 @@ export class View {
         let values1: Array<FieldValues> = new Array<FieldValues>();
         values1.push({ Depend: "", Value: "Hadad" });
         values1.push({ Depend: "", Value: "Sheler" });
+        values1.push({ Depend: "", Value: "Amrani" });
         doc.FieldsLists.push(values1);
         let values2: Array<FieldValues> = new Array<FieldValues>();
         values2.push({ Depend: "Hadad", Value: "Avi" });
         values2.push({ Depend: "Hadad", Value: "Riki" });
         values2.push({ Depend: "Sheler", Value: "Dana" });
         values2.push({ Depend: "Sheler", Value: "Moshe" });
+        values2.push({ Depend: "Amrani", Value: "Noam" });
         doc.FieldsLists.push(values2);
         let values3: Array<FieldValues> = new Array<FieldValues>();
         values3.push({ Depend: "HadadAvi", Value: "Pans" });
         values3.push({ Depend: "HadadRiki", Value: "Dress" });
         values3.push({ Depend: "ShelerDana", Value: "Shirt" });
         values3.push({ Depend: "ShelerMoshe", Value: "Pans" });
+        values3.push({ Depend: "AmraniNoam", Value: "Pans" });
+        values3.push({ Depend: "AmraniNoam", Value: "Shirt" });
         doc.FieldsLists.push(values3);
         let values4: Array<FieldValues> = new Array<FieldValues>();
         values4.push({ Depend: "HadadAviPans", Value: "Long" });
@@ -187,6 +192,10 @@ export class View {
         values4.push({ Depend: "ShelerDanaShirt", Value: "T-Shirt" });
         values4.push({ Depend: "ShelerMoshePans", Value: "Short" });
         values4.push({ Depend: "ShelerMoshePans", Value: "Bath" });
+        values4.push({ Depend: "AmraniNoamPans", Value: "Short" });
+        values4.push({ Depend: "AmraniNoamPans", Value: "Long" });
+        values4.push({ Depend: "AmraniNoamShirt", Value: "T-Shirt" });
+        values4.push({ Depend: "AmraniNoamShirt", Value: "Long" });
         doc.FieldsLists.push(values4);
         StoreValueList(controlName, doc);
         // return RetriveValue(controlName);
