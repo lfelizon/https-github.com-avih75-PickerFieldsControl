@@ -6,7 +6,7 @@ export class View {
     private pickerFieldModel: Model;
     constructor(private model: Model, private onInputChanged: Function) {
         this.pickerFieldModel = model;
-        this.StoreListToStorage(model.controlName);
+        //this.StoreListToStorage(model.controlName);
         this.CreateView();
     }
     private CreateView() {

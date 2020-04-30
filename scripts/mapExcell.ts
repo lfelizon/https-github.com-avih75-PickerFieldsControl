@@ -1,43 +1,99 @@
-// import { FieldsValuesList, StoreValueList } from "./StorageHelper";
-// const readXlsxFile = require('read-excel-file/node');
-import XLSX = require('xlsx');
+import { FieldsValuesList, StoreValueList, FieldValues } from "./StorageHelper";
+import { ResultDetails } from "TFS/TestManagement/Contracts";
 
 
-var provider = (actionContext) => {
-
+let provider = (actionContext) => {
     return {
         execute: (LoadedArgs: any) => {
-            //let fieldsValuesList: FieldsValuesList;
             LoaFile();
-            let controlName = AskForControlName()
-            MapFile();
-            PushDoc(controlName);
-            alert(actionContext + " , world1 , " + LoadedArgs);
         },
     };
 };
-function AskForControlName() {
-    return "";
-}
 function LoaFile() {
     let input = $('<input />')
         .attr('type', "file")
         .attr('accept', "txt")
     input.change((eventObject: JQueryEventObject) => {
-        FileSelected(eventObject, input)
+
+        FileSelected(eventObject, input);
+
     })
     input.click()
 }
 function FileSelected(eventObject: JQueryEventObject, input: JQuery) {
     let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
-    let fileName = input.prop('value').toLowerCase();
+    let fileName: string = input.prop('value').toLowerCase();
     if (regex.test(fileName)) {
+        let fileSplitPath = input.prop('value').toString().split("\\");
+        let controlName = fileSplitPath[fileSplitPath.length - 1].split('.')[0];
         if (typeof (FileReader) != "undefined") {
             let reader = new FileReader();
             //For Browsers other than IE.
             if (reader.readAsBinaryString) {
                 reader.onload = function (e) {
-                    ProcessExcel(e.target.result, input.prop('value'));
+                    let fieldsValuesList = {
+                        FieldsLists: new Array<Array<FieldValues>>()
+                    }
+                    let level1List = new Array<FieldValues>();
+                    let level2List = new Array<FieldValues>();
+                    let level3List = new Array<FieldValues>();
+                    let level4List = new Array<FieldValues>();
+                    let fileResult = e.target.result.toString();
+                    let rows: Array<string> = fileResult.split("\n");
+                    for (let index = 1; index < rows.length; index++) {
+                        const cells = rows[index].split(',');
+                        let check: boolean = false;
+                        if (cells[0] != "") {
+                            level1List.forEach(element => {
+                                if (element.Depend == "" && element.Value == cells[1])
+                                    check = true;
+                            });
+                            if (!check) {
+                                level1List.push({ Depend: "", Value: cells[1] });
+                                level2List.push({ Depend: cells[1], Value: cells[2] });
+                                level3List.push({ Depend: cells[1] + cells[2], Value: cells[3] });
+                                level4List.push({ Depend: cells[1] + cells[2] + cells[3], Value: cells[4] });
+                            }
+                            else {
+                                check = false;
+                                level2List.forEach(element => {
+                                    if (element.Depend == cells[1] && element.Value == cells[2])
+                                        check = true;
+                                });
+                                if (!check) {
+                                    level2List.push({ Depend: cells[1], Value: cells[2] });
+                                    level3List.push({ Depend: cells[1] + cells[2], Value: cells[3] });
+                                    level4List.push({ Depend: cells[1] + cells[2] + cells[3], Value: cells[4] });
+                                }
+                                else {
+                                    check = false;
+                                    level3List.forEach(element => {
+                                        if (element.Depend == cells[1] + cells[2] && element.Value == cells[3])
+                                            check = true;
+                                    });
+                                    if (!check) {
+                                        level3List.push({ Depend: cells[1] + cells[2], Value: cells[3] });
+                                        level4List.push({ Depend: cells[1] + cells[2] + cells[3], Value: cells[4] });
+                                    }
+                                    else {
+                                        check = false;
+                                        level4List.forEach(element => {
+                                            if (element.Depend == cells[1] + cells[2] + cells[3] && element.Value == cells[4])
+                                                check = true;
+                                        });
+                                        if (!check) {
+                                            level4List.push({ Depend: cells[1] + cells[2] + cells[3], Value: cells[4] });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    fieldsValuesList.FieldsLists.push(level1List);
+                    fieldsValuesList.FieldsLists.push(level2List);
+                    fieldsValuesList.FieldsLists.push(level3List);
+                    fieldsValuesList.FieldsLists.push(level4List);
+                    PushDoc(controlName, fieldsValuesList);
                 };
                 reader.readAsBinaryString(input.prop('files')[0]);
             } else {
@@ -58,89 +114,9 @@ function FileSelected(eventObject: JQueryEventObject, input: JQuery) {
     } else {
         alert("Please upload a valid Excel file.");
     }
-    // let x = eventObject.target;
-    // let y = x;
-    // //let file = input.files[0];
-    // let file = input.prop('files')[0];
-    // let fr = new FileReader();
-
-    // fr.onload = () => {
-    //     let x = fr.result;
-    // };
-    // //fr.readAsText(file);
-    // //fr.readAsBinaryString(file); //as bit work with base64 for example upload to server
-    // fr.readAsDataURL(file);
-    // //readXlsxFile('/path/to/file').then((rows) => {
-    // //  rows.forEach(row => {
-    // //    row.forEach(element => {
-
-    // //  });
-    // //});
-    // // `rows` is an array of rows
-    // // each row being an array of cells.
-    // //})
 }
-function ProcessExcel(data, path) {
-
-    var workbook = XLSX.read(data, {
-        type: 'binary'
-    });
-
-    //Fetch the name of First Sheet.
-    var firstSheet = workbook.SheetNames[0];
-
-    //Read all rows from First Sheet into an JSON array.
-    //     var excelRows = XLSX.utils.(workbook.Sheets[firstSheet]);
-    //     var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
-
-    //     //Create a HTML Table element.
-    //     var table = $("<table />");
-    //     table[0].border = "1";
-
-    //     //Add the header row.
-    //     var row = $(table[0].insertRow(-1));
-
-    //    //Add the header cells.
-    //     var headerCell = $("<th />");
-    //     headerCell.html("Id");
-    //     row.append(headerCell);
-
-    //     var headerCell = $("<th />");
-    //     headerCell.html("Name");
-    //     row.append(headerCell);
-
-    //     var headerCell = $("<th />");
-    //     headerCell.html("Country");
-    //     row.append(headerCell);
-
-    //     //Add the data rows from Excel file.
-    //     for (var i = 0; i < excelRows.length; i++) {
-    //         //Add the data row.
-    //         var row = $(table[0].insertRow(-1));
-
-    //         //Add the data cells.
-    //         var cell = $("<td />");
-    //         cell.html(excelRows[i].Id);
-    //         row.append(cell);
-
-    //         cell = $("<td />");
-    //         cell.html(excelRows[i].Name);
-    //         row.append(cell);
-
-    //         cell = $("<td />");
-    //         cell.html(excelRows[i].Country);
-    //         row.append(cell);
-    //     }
-
-    // var dvExcel = $("#dvExcel");
-    // dvExcel.html("");
-    // dvExcel.append(table);
-}
-function MapFile() {
-
-}
-function PushDoc(controlName: string) {
-    //StoreValueList(controlName, this.fieldsValuesList)
-
+function PushDoc(controlName: string, fieldsValuesList) {
+    StoreValueList(controlName, fieldsValuesList)
+    alert("Looks Like " + controlName + " value list updated");
 }
 VSS.register(VSS.getContribution().id, provider);

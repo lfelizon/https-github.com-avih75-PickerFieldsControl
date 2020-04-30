@@ -1,4 +1,5 @@
 ﻿/// <reference types="vss-web-extension-sdk" />
+
 export interface FieldValues {
     Depend: string;
     Value: string;

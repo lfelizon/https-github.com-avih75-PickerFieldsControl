@@ -7,6 +7,7 @@
         "@types/react-dom": "^0.14.23",
         "@types/requirejs": "^2.1.28",
         "chai": "^3.5.0",
+        "exceljs": "^3.9.0",
         "grunt": "~1.0.1",
         "grunt-cli": "^1.2.0",
         "grunt-contrib-clean": "^1.0.0",
@@ -19,11 +20,13 @@
         "karma-mocha": "^1.2.0",
         "karma-phantomjs-launcher": "^1.0.2",
         "karma-requirejs": "^1.1.0",
-        "mocha": "^7.1.0",
+        "mocha": "^7.1.2",
+        "read-excel-file": "^4.0.6",
         "requirejs": "^2.3.2",
         "typescript": "^2.9.2",
         "typings": "^2.1.1",
-        "vss-web-extension-sdk": "^5.141.0"
+        "vss-web-extension-sdk": "^5.141.0",
+        "xlsx": "^0.15.6"
     },
     "name": "picker-fields-control",
     "private": false,
@@ -32,10 +35,28 @@
         "postinstall": "typings install"
     },
     "dependencies": {
-        "@types/node": "^13.7.7",
-        "azure-devops-node-api": "^10.1.0",
+        "@types/node": "^13.13.4",
+        "azure-devops-node-api": "^10.1.1",
+        "csv-parse": "^4.9.0",
+        "csv-parser": "^2.3.2",
+        "events": "^3.1.0",
+        "exceljs": "^3.9.0",
         "http-proxy-agent": "^4.0.1",
+        "nodejs": "0.0.0",
         "read-excel-file": "^4.0.6",
-        "xlsx": "^0.15.6"
-    }
+        "stream": "0.0.2"
+    },
+    "description": "[Learn how to build your own custom control for the work item form.](https://www.visualstudio.com/en-us/docs/integrate/extensions/develop/custom-control)",
+    "main": "gruntfile.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/avih75/PickerFieldsControl.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/avih75/PickerFieldsControl/issues"
+    },
+    "homepage": "https://github.com/avih75/PickerFieldsControl#readme"
 }
