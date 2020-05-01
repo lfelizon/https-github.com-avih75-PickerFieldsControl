@@ -4,9 +4,8 @@ import { FieldValues, FieldsValuesList, StoreValueList } from "./StorageHelper";
 
 export class View {
     private pickerFieldModel: Model;
-    constructor(private model: Model, private onInputChanged: Function) {
+    constructor(private model: Model) {//, private onInputChanged: Function) {
         this.pickerFieldModel = model;
-        //this.StoreListToStorage(model.controlName);
         this.CreateView();
     }
     private CreateView() {
@@ -14,7 +13,6 @@ export class View {
         var container = $("<div />");
         container.addClass("container");
         for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
-            //container.append(this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
             if (this.model.fieldsValue[0] == "") {
                 container.append(this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
             }
@@ -22,11 +20,6 @@ export class View {
                 container.append(this.AddSelectFieldWithValues(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
             }
         }
-        // for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
-        //     if (this.pickerFieldModel.fieldsValue[index] != "") {
-        //         this.SetFirstValues(index + 1, this.pickerFieldModel.fieldsValue[index]);
-        //     }
-        // }
         $("body").append(container);
     }
     private AddSelectFieldWithValues(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues>) {
@@ -89,16 +82,6 @@ export class View {
         div.append(newSelect);
         return div;
     }
-    // private SetFirstValues(fieldNumber: number, fieldValue: string) {
-    //     let select = $("#" + fieldNumber);
-    //     //select.val(fieldValue);
-    //     select.filter(function () {
-    //         //may want to use $.trim in here
-    //         return $(this).text() == fieldValue;
-    //     }).prop('selected', true);
-    //     select.removeAttr("disabled");
-    //     this.OnSelectChange(fieldNumber)
-    // }
     private OnSelectChange(fieldNumber: number, eventObject: JQueryEventObject = undefined) {
         for (let i = fieldNumber + 1; i < 5; i++) {
             let select = $("#" + i)
@@ -138,30 +121,20 @@ export class View {
             (service) => {
                 service.setFieldValue(this.model.fieldsRefName[0], this.model.fieldsValue[0]).then(() => {
                     service.setFieldValue(this.model.fieldsRefName[1], this.model.fieldsValue[1]).then(() => {
-                        service.setFieldValue(this.model.fieldsRefName[2], this.model.fieldsValue[2]).then(() => {
-                            service.setFieldValue(this.model.fieldsRefName[3], this.model.fieldsValue[3]);
-                        })
+                        if (+this.model.fieldsQuantity > 2) {
+                            service.setFieldValue(this.model.fieldsRefName[2], this.model.fieldsValue[2]).then(() => {
+                                if (+this.model.fieldsQuantity > 3) {
+                                    service.setFieldValue(this.model.fieldsRefName[3], this.model.fieldsValue[3]);
+                                }
+                            })
+                        }
                     })
                 });
             }
         );
     }
-    // private updateWorkItem(fieldNumber: number, value: string) {
-    //     WitService.WorkItemFormService.getService().then(
-    //         (service) => {
-    //             service.setFieldValue(this.model.fieldsRefName[fieldNumber - 1], value).then(() => {
-    //                 //this._model.setCurrentValue(value, fieldName);
-    //                 //this._view.Update(value, fieldName);
-    //             });
-    //         }
-    //     );
-    // }
-    // public Update(value: string, fieldName: string) {
-    //     this.valuesList[fieldName] = String(value);
-    //     $("." + fieldName).val(this.valuesList[fieldName]);
-    // }
     public StoreListToStorage(controlName: string) {
-        // Demo list
+        // in here you can create the lists..... if you dont want to use the excell uploader
         let doc: FieldsValuesList = {
             FieldsLists: new Array<Array<FieldValues>>()
         }
@@ -198,9 +171,5 @@ export class View {
         values4.push({ Depend: "AmraniNoamShirt", Value: "Long" });
         doc.FieldsLists.push(values4);
         StoreValueList(controlName, doc);
-        // return RetriveValue(controlName);
-        // RetriveValue(controlName).then((doc2) => {
-        //     let x = doc2
-        // });
     }
 }
