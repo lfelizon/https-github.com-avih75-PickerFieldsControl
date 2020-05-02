@@ -4,9 +4,12 @@ import { FieldValues, FieldsValuesList, StoreValueList } from "./StorageHelper";
 
 export class View {
     private pickerFieldModel: Model;
-    constructor(private model: Model) {//, private onInputChanged: Function) {
+    constructor(private model: Model) {
         this.pickerFieldModel = model;
         this.CreateView();
+        if (this.pickerFieldModel.editList) {
+            this.AddEditOpetions();
+        }
     }
     private CreateView() {
         $(".container").remove();
@@ -134,7 +137,7 @@ export class View {
         );
     }
     public StoreListToStorage(controlName: string) {
-        // in here you can create the lists..... if you dont want to use the excell uploader
+        // in here you can create the lists..... if you dont want to use the excell input
         let doc: FieldsValuesList = {
             FieldsLists: new Array<Array<FieldValues>>()
         }
@@ -171,5 +174,30 @@ export class View {
         values4.push({ Depend: "AmraniNoamShirt", Value: "Long" });
         doc.FieldsLists.push(values4);
         StoreValueList(controlName, doc);
+        // return RetriveValue(controlName);
+        // RetriveValue(controlName).then((doc2) => {
+        //     let x = doc2
+        // });
+    }
+    public AddEditOpetions() {
+        var editContainer = $("<div />");
+        var editListButton = $("<Button />");  // opens new window to show tables list.... add remove values
+        var createNewListsButton = $("<Button />");   // create empty lists
+        var delteListsButton = $("<Button />");    // delete all values
+        editContainer.text("Edit Lists");
+        createNewListsButton.text("Creat New List");
+        delteListsButton.text("Delete lists");
+        editContainer.append(editListButton);
+        editContainer.append(createNewListsButton);
+        editContainer.append(delteListsButton);
+        if (this.model.fieldValuesList.FieldsLists[0] == undefined ||
+            this.model.fieldValuesList.FieldsLists[0][0] == undefined ||
+            this.model.fieldValuesList.FieldsLists[0].length == 0) {
+            // create view of no lists => just create new list ....
+        }
+        else {
+            // create view of edit list => delete , edit....
+        }
+        $("body").append(editContainer);
     }
 }
