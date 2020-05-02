@@ -1,8 +1,6 @@
-# Custom Control for the Work Item Form
+# Custom Control for Work Item Form
 
-[Learn how to build your own custom control for the work item form.](https://www.visualstudio.com/en-us/docs/integrate/extensions/develop/custom-control)
-
-![Control](img/hitCountControl.png)
+![Control](img/logo.png)
 
 ### Usage ###
 
@@ -27,188 +25,50 @@
 You have now installed the extension inside your collection.  
 You are now able to put the control in the work item form.
 
-A work item type is defined by XML, including the layout of the work item form.  
-As part of the walkthrough, you will add the control to the layout.  
-[Read more information on WebLayout XML](https://www.visualstudio.com/docs/work/reference/weblayout-xml-elements).  
-In this example, we will add the control to the Agile "user story".
+# Deffine the extension in Azure DevOps
 
-1.  Open the `Developer Command Prompt`.  Export the XML file to your desktop with command shown below.
-    ```
-    witadmin exportwitd /collection:CollectionURL /p:Project /n:TypeName /f:FileName
-    ```
-2. This creates a file in the directory that you specified.  Inside this file, navigate to the section called "Work Item Extensions".  This section shows the documentation of the control such as the inputs and ids.  All this information was defined in the manifest, *vss-extension.json*.
+There is nine Inputs parameters, four of them are optional.
+Control Name : this is the name of the control (you can put more then one), and it use this name to save the list
+               values in the storage, so it is importent to put logic names.
+FieldName (1-4) : this is the field name (that what the user see)
+Field(1-4) : this is the value that the user select.
+fieldName and Field 3/4 are optional (if you want to cascade more the 2 lists).
 
-    ```xml
-        <!--**********************************Work Item Extensions***************************
+![Layout Customization](img/A.png)
+![Layout Customization](img/B.png)
 
-    Extension:
-        Name: Action-Button
-        Id: AviHadad.Action-Button
+# Create CSV File
 
-        Control contribution:
-            Id: AviHadad.Action-Button.ActionButton
-            Description: Runs a code from the buttonAction.dll file.
-            Inputs:
-                Id: DataTransfer
-                Description: The field pass Data from the work item to the Action Code.
-			    Type: WorkItemField
-			    Field Type: Integer; Double; String
-			    Data Type: String
-			    IsRequired: true
+Create Your CSV file, you can put thousend of values
+pay attenshion to write the values correctly, and do not add spaces in the end of the value
+save the file ... file name must be as the name of the control name -> controlName.csv
 
-                Id: TargetType
-			    Description: The field pass the target work item type.
-			    Type: WorkItemField
-			    Field Type: Integer; Double; String
-			    Data Type: String
-			    IsRequired: true
-    ```
+![Layout Customization](img/C.png)
 
-4. Add an extension tag below the "Work Item Extensions" section as shown below to make your control available to work item form. 
+# Upload the CSV file
 
-     ```xml
-        <!--**********************************Work Item Extensions***************************
-        ...
+use the action menu added in the work item Form.
+"Upload Dependencies"
 
-        Note: For more information on work item extensions use the following topic:
-        http://go.microsoft.com/fwlink/?LinkId=816513
-        -->
+![Layout Customization](img/D.png)
 
-        <Extensions>
-          <Extension Id="AviHadad.Action-Button" />
-        </Extensions>
+# Use your Controller
 
-     ```
-5. Add two fields to the xml, one for the buttons list, and the second for the convert work item type
-        <FIELD name="Button1" refname="Buttons.Button1" type="String" syncnamechanges="true">
-            <DEFAULT from="value" value="Convert to Task,Action2" />
-        </FIELD>
-        <FIELD name="TargetType" refname="Buttons.TargetType" type="String" syncnamechanges="true">
-            <DEFAULT from="value" value="Task" />
-        </FIELD>
-6. Find your extension ID in the "Work Item Extensions" section: 
+![Layout Customization](img/E.png)
 
-    ```XML
-        <!--**********************************Work Item Extensions***************************
+# If you still working with xml
 
-    Extension:
-        Name: hitcount-control-dev
-        Id: example.hitcount-control-dev
-        ...
-    ```
+set your fields
 
-7. This extension is a contribution, so you add it with a contribution tag in place of the <Control> tag. This example adds the "ControlContribution" to the "Planning" group.
-    ```xml
-    <Page Id="Details">
-    ...
-        <Section>
-        ...
-            <Group Id="Planning">
-            ...
-			  <ControlContribution Label="new" Id="AviHadad.Action-Button.ActionButton">
-				<Inputs>
-					<Input Id="DataTrasfer" Value="Buttons.Button1" />
-   					<Input Id="TargetType"  Value="Buttons.TargetType" />
-				</Inputs>
-			  </ControlContribution>
+![Layout Customization](img/F1.png)
 
-                <Control Label="Risk" Type="FieldControl" FieldName="Microsoft.VSTS.Common.Risk" />
-    ```
+set the extenshion
 
-8. Finally, import this *.xml* file, using witadmin.
-    ```
-    witadmin importwitd /collection:CollectionURL /p:Project /f:FileName
-    ``` 
+![Layout Customization](img/F2.png)
 
-## Make changes to the control
- You may (even should) make your own Action, to add functionality to your TFS, by adding more cases in the switch case in the model, and call your own method..... keep your mind on this, the context on the button is the switch case you should handle.
- If you make changes to your extension files, you need to compile the Typescript and create the *.vsix* file again (steps 4-7 in the "Package & Upload to the marketplace" section).
- 
-Instead of re-installing the extension, you can replace the extension with the new *.vsix* package.  Right-click the extension in the "Manage Extensions" page and click "Update".  You do not need to make changes to your XML file again.
+add the control to the view
 
-## Make API calls to the work item form service
-
-Reading data from VSTS/TFS server is a common REST API task for a work item control.  The VSS SDK provides a set of services for these REST APIs.  To use the service, import it into the typescript file.
-
-```typescript
-import * as VSSService from "VSS/Service";
-import * as WitService from "TFS/WorkItemTracking/Services";
-import * as ExtensionContracts from "TFS/WorkItemTracking/ExtensionContracts";
-import * as Q from "q";
-```
-
-To enable Intellisense in Visual Studio Code, include the type definition file *index.d.ts*.  Once you've added this definition file, it shows all functions available in the VSS SDK.
-```typescript
-/// <reference path="../typings/index.d.ts" />
-```
-
-## Commonly Needed
-| API                | Functions                   | Usage                                                                     |
-| ------------------ | --------------------------- | ------------------------------------------------------------------------- |
-| VSSService         | VSS.getConfiguration()      | Returns the XML which defines the work item type.  Used in the sample to read the inputs of the control to describe its behavior.       |
-| WitService         | getService()                | Returns an instance of the server to make calls.                     |
-|                    | getFieldValue()             | Returns the field's current value.                                    |
-|                    | setFieldValue()             | Returns the field's current value using your control.       |
-|                    | getAllowedFieldValues()     | Returns the allowed values, or the items in a dropdown, of a field.                                    |
+![Layout Customization](img/F3.png)
 
 
-### How to invoke methods on a service call
- Create an instance of the work item service to get information about the work item.  Use one of the service's functions to get information about the field.  This example asks for the allowed values of a field.
-```typescript
-WitService.WorkItemFormService.getservice().then(
-        (service) => {
-            service.getAllowedFieldValues(this._fieldName), (allowedValues: string[]) => {
-                // do something
-            }
-        }
-)
-```
-
-### Recommendation: use Q with service calls
-To wait on the response of multiple calls, you can use Q.  This example shows how to ask for the allowed values and the current value associated with a field using the Q.spread function.  You can make two parallel requests, and the code will not be executed until both services have returned a response.
-
-```typescript
-WitService.WorkItemFormService.getService().then(
-            (service) => {
-                Q.spread<any, any>(
-                    [service.getAllowedFieldValues(this._fieldName), service.getFieldValue(this._fieldName)],
-                    (allowedValues: string[], currentValue: (string | number)) => {
-                        //do something
-                    }
-                )
-            }
-)
-```
-
-### Structure ###
-
-```
-/scripts            - Typescript code for extension
-/img                - Image assets for extension and description
-/typings            - Typescript typings
-
-index.html          - Main entry point
-vss-extension.json  - Extension manifest
-```
-
-#### Grunt ####
-
-Three basic `grunt` tasks are defined:
-
-* `build` - Compiles TS files in `scripts` folder
-* `package-dev` - Builds the development version of the vsix package
-* `package-release` - Builds the release version of the vsix package
-* `publish-dev` - Publishes the development version of the extension to the marketplace using `tfx-cli`
-* `publish-release` - Publishes the release version of the extension to the marketplace using `tfx-cli`
-
-#### VS Code ####
-
-The included `.vscode` config allows you to open and build the project using [VS Code](https://code.visualstudio.com/).
-
-#### Unit Testing ####
-
-The project is setup for unit testing using `mocha`, `chai`, and the `karma` test runner. A simple example unit test is included in `scripts/logic/messageHelper.tests.ts`. To run tests just execute:
-
-```
-grunt test
-```
+Contact me avih75@gmail.com

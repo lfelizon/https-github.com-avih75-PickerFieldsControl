@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script src="scripts/VSS.SDK.min.js"></script>
+    <title>Picker-Fields-Action</title>
+</head>
+
+<body>
+
+
+    <script>
+        // VSS.init();
+        // let menuContributionHandler = (function() {
+        //     "use strict";
+        //     return {
+        //         execute: maping(actionContext)
+        //             // function(actionContext) {
+        //             //     alert("Hello, world");
+        //             // }
+        //     };
+        // }());
+        // VSS.register("myAction", menuContributionHandler);
+        VSS.init({
+            explicitNotifyLoaded: true,
+            usePlatformScripts: true,
+            configureModuleLoader: true,
+            // moduleLoaderConfig: {
+            //     paths: {
+            //         "moment": "lib/moment.min"
+            //     }
+            // }
+        });
+        VSS.require(["scripts/mapExcell"], function(data) {
+            // Loading succeeded
+            VSS.notifyLoadSucceeded();
+        });
+    </script>
+</body>
+
+</html>
