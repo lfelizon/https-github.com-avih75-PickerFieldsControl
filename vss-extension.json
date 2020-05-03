@@ -13,7 +13,8 @@
         "default": "img/logo.png"
     },
     "targets": [{
-        "id": "Microsoft.VisualStudio.Services"
+        "id": "Microsoft.VisualStudio.Services",
+        "version": "[15.0,)"
     }],
     "tags": [
         "Work Item",
