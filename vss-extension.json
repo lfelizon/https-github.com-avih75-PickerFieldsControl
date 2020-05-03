@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Picker-Fields-Control",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "name": "Picker Fields Control",
     "scopes": [
         "vso.work",
@@ -21,7 +21,9 @@
         "Work Item control",
         "Usability",
         "Picker",
-        "List Values"
+        "List Values",
+        "Stack",
+        "List"
     ],
     "content": {
         "details": {
