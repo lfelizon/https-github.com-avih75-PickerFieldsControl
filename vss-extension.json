@@ -21,7 +21,9 @@
         "Work Item control",
         "Usability",
         "Picker",
-        "List Values"
+        "List Values",
+        "Storage",
+        "List"
     ],
     "content": {
         "details": {

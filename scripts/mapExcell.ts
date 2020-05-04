@@ -1,5 +1,5 @@
-import { FieldsValuesList, StoreValueList, FieldValues } from "./StorageHelper";
-import { ResultDetails } from "TFS/TestManagement/Contracts";
+import { StoreValueList, FieldValues } from "./StorageHelper";
+import { getClient } from 'VSS/Security/RestClient';
 
 
 let provider = (actionContext) => {
@@ -13,14 +13,13 @@ function LoaFile() {
     let input = $('<input />')
         .attr('type', "file")
         .attr('accept', "txt")
-    input.change((eventObject: JQueryEventObject) => {
-
-        FileSelected(eventObject, input);
-
+    input.change(() => {
+        CheckPermission();
+        FileSelected(input); 
     })
     input.click()
 }
-function FileSelected(eventObject: JQueryEventObject, input: JQuery) {
+function FileSelected(input: JQuery) {
     let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
     let fileName: string = input.prop('value').toLowerCase();
     if (regex.test(fileName)) {
@@ -118,5 +117,8 @@ function FileSelected(eventObject: JQueryEventObject, input: JQuery) {
 function PushDoc(controlName: string, fieldsValuesList) {
     StoreValueList(controlName, fieldsValuesList)
     alert("Looks Like " + controlName + " value list updated");
+}
+function CheckPermission() {
+    // let securi = getClient().hasPermissions
 }
 VSS.register(VSS.getContribution().id, provider);
