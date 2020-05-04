@@ -11,29 +11,12 @@
 
 
     <script>
-        // VSS.init();
-        // let menuContributionHandler = (function() {
-        //     "use strict";
-        //     return {
-        //         execute: maping(actionContext)
-        //             // function(actionContext) {
-        //             //     alert("Hello, world");
-        //             // }
-        //     };
-        // }());
-        // VSS.register("myAction", menuContributionHandler);
         VSS.init({
             explicitNotifyLoaded: true,
             usePlatformScripts: true,
-            configureModuleLoader: true,
-            // moduleLoaderConfig: {
-            //     paths: {
-            //         "moment": "lib/moment.min"
-            //     }
-            // }
+            configureModuleLoader: true
         });
         VSS.require(["scripts/mapExcell"], function(data) {
-            // Loading succeeded
             VSS.notifyLoadSucceeded();
         });
     </script>
