@@ -22,32 +22,31 @@
     11. Click "Upload".
     12. Hover over the extension when it appears in the list, and click "Install".
 
-You have now installed the extension inside your collection.  
-You are now able to put the control in the work item form.
+This should should install the extension in your collection.  
+Next step will add the control to the work item form.
 
-# Deffine the extension in Azure DevOps
+# Define the extension in Azure DevOps
 
-There is nine Inputs parameters, four of them are optional.
-Control Name : this is the name of the control (you can put more then one), and it use this name to save the list
-               values in the storage, so it is importent to put logic names.
-FieldName (1-4) : this is the field name (that what the user see)
-Field(1-4) : this is the value that the user select.
-fieldName and Field 3/4 are optional (if you want to cascade more the 2 lists).
+There are nine inputs parameters, four of them are optional.  
+*Control Name* : The name of the control (you can put more than one). This name will be used to save the list values in the storage, so it is important to provide meaningful name(s).  
+*FieldName* (1-4) : The field name that the user sees.  
+*Field* (1-4) : The optional values that the user can select.  
+*FieldName* and *Field* (3-4) are optional (if you want to cascade more the 2 lists).
 
 ![Layout Customization](img/A.png)
 ![Layout Customization](img/B.png)
 
 # Create CSV File
 
-Create Your CSV file, you can put thousend of values
-pay attenshion to write the values correctly, and do not add spaces in the end of the value
-save the file ... file name must be as the name of the control name -> controlName.csv
+Create Your CSV file, you can put thousands of values  
+Pay attenshion to write the values correctly, and do not add spaces in the end of the value  
+Save the file ... file name must be as the name of the control name -> controlName.csv
 
 ![Layout Customization](img/C.png)
 
 # Upload the CSV file
 
-use the action menu added in the work item Form.
+Use the action menu added in the work item Form.  
 "Upload Dependencies"
 
 ![Layout Customization](img/D.png)
@@ -58,15 +57,15 @@ use the action menu added in the work item Form.
 
 # If you still working with xml
 
-set your fields
+Set your fields
 
 ![Layout Customization](img/F1.png)
 
-set the extenshion
+Set the extenshion
 
 ![Layout Customization](img/F2.png)
 
-add the control to the view
+Add the control to the view
 
 ![Layout Customization](img/F3.png)
 
