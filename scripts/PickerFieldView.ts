@@ -94,9 +94,7 @@ export class View {
             this.model.fieldsValue[fieldNumber] = "";
         }
         let select: string = $("#" + fieldNumber).children("option:selected").val();
-        this.model.fieldsValue[fieldNumber - 1] = select;
-        //if (fieldNumber == 4) {
-        //this.updateWorkItem(fieldNumber, select);
+        this.model.fieldsValue[fieldNumber - 1] = select; 
         this.updateWorkItem();
         //}
         if (fieldNumber < 4) {
