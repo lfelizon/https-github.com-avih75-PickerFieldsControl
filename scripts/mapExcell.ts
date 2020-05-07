@@ -1,6 +1,6 @@
 import { StoreValueList, FieldValues } from "./StorageHelper";
 import GitRestClient = require("TFS/VersionControl/GitRestClient");
-import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository } from "TFS/VersionControl/Contracts";
+import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
 
 let provider = () => {
     return {
@@ -10,13 +10,7 @@ let provider = () => {
     };
 };
 function LoaFile() {
-    let input = $('<input />')
-        .attr('type', "file").
-        change(() => {
-            CheckPermission();
-            FileSelected(input);
-        });
-    input.click()
+    $("#uploadCsv").click();
 }
 function FileSelected(input: JQuery) {
     let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
@@ -130,37 +124,67 @@ function PushToGit(refName: string, controlName: string, projectName: string) {
     let project: string = VSS.getWebContext().project.name;
     let git: GitRestClient.GitHttpClient4 = GitRestClient.getClient();
     git.getRepository(repostoryName, projectName).then((repostory: GitRepository) => {
-        let repostoryId = repostory.id;
-        let gitChanges: GitChange[] = [<GitChange>{
-            changeType: 1,
-            newContent: <ItemContent>{ content: refName, contentType: 1 }, //0-> RawText = 0, Base64Encoded = 1,
-            item: <GitItem>{
-                path: '/' + controlName + '.csv'
+        if (repostory != undefined) {
+            let repostoryId = repostory.id;
+            if (typeof (repostoryId) === "string") {
+                try {
+                    git.getItem(repostoryId, controlName + ".csv").then((item) => {
+                        let gitChanges: GitChange[] = [<GitChange>{
+                            changeType: 2, // 1-add  2- edit
+                            newContent: <ItemContent>{ content: refName, contentType: 0 }, //0-> RawText = 0, Base64Encoded = 1,
+                            item: <GitItem>{
+                                path: '/' + controlName + '.csv'
+                            }
+                        }];
+                        pushCommit(git, gitChanges, repostoryId, project, repostory, controlName);
+                    });
+                }
+                catch{
+                    let gitChanges: GitChange[] = [<GitChange>{
+                        changeType: 1, // 1-add  2- edit
+                        newContent: <ItemContent>{ content: refName, contentType: 0 }, //0-> RawText = 0, Base64Encoded = 1,
+                        item: <GitItem>{
+                            path: '/' + controlName + '.csv'
+                        }
+                    }];
+                    pushCommit(git, gitChanges, repostoryId, project, repostory, controlName);
+                }
             }
-        }];
-        if (typeof (repostoryId) === "string") {
-            git.getRefs(repostoryId, project).then((refs) => {
-                let ref = refs.find(element => element.name === refName);
-                let refUpdates: GitRefUpdate[] = [<GitRefUpdate>{
-                    name: ref.name,
-                    oldObjectId: ref.objectId
-                }];
-                let gitCommitRef: GitCommitRef[] = [
-                    <GitCommitRef>{
-                        changes: gitChanges,
-                        comment: 'Push a file'
-                    }
-                ]
-                let gitPush: GitPush = <GitPush>{
-                    commits: gitCommitRef,
-                    refUpdates: refUpdates,
-                    repository: repostory
-                };
-                git.createPush(gitPush, repostoryId, project).then(() => {
-                    alert(controlName + ".csv file Commited.");
-                });
-            })
+        }
+        else {
+            alert("Cant find reposetory");
         }
     })
 }
+function pushCommit(git: GitRestClient.GitHttpClient4, gitChanges: GitChange[], repostoryId: string, project: string, repostory: GitRepository, controlName: string) {
+    let gitCommitRef: GitCommitRef[] = [
+        <GitCommitRef>{
+            changes: gitChanges,
+            comment: 'Push a file'
+        }
+    ]
+    git.getRefs(repostoryId, project).then((refs) => {
+        let ref: GitRef = refs.find(element => element.name === "refs/heads/master");
+        if (ref != undefined) {
+            let refUpdates: Array<GitRefUpdate> = [<GitRefUpdate>{
+                name: ref.name,
+                oldObjectId: ref.objectId
+            }];
+            let gitPush: GitPush = <GitPush>{
+                commits: gitCommitRef,
+                refUpdates: refUpdates,
+                repository: repostory
+            };
+            git.createPush(gitPush, repostoryId, project).then((gitPush) => {
+                if (gitPush != undefined) {
+                    alert(controlName + ".csv file Commited.");
+                }
+            });
+        }
+    })
+}
+let input = $("#uploadCsv").change(() => {
+    CheckPermission();
+    FileSelected(input);
+})
 VSS.register(VSS.getContribution().id, provider); 
