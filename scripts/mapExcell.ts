@@ -10,7 +10,8 @@ let provider = () => {
     };
 };
 function LoaFile() {
-    $("#uploadCsv").click();
+    let p = $("#uploadCsv");    
+    p.click(); 
 }
 function FileSelected(input: JQuery) {
     let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;

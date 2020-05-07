@@ -14,11 +14,16 @@ export async function StoreValueList(key: string, value: FieldsValuesList) {
     deferred.resolve();
     return deferred;
 }
-export async function RetriveValueList(key: string) {
-    let result: FieldsValuesList = undefined;
+export async function RetriveValueList(controlName: string, projectName: string) {
+    //let result: FieldsValuesList = undefined;
+    let key: string = controlName;
     let dataService: any = await VSS.getService(VSS.ServiceIds.ExtensionData);
-    result = await dataService.getValue(key);
-    // StoreListToStorage("Picker1") to add a doc to storeg
+    let result: FieldsValuesList = await dataService.getValue(key);
+    key = projectName + controlName;
+    let commonResult: FieldsValuesList = await dataService.getValue(key);
+    if (commonResult != undefined) {
+        result = commonResult;
+    }
     return result;
 }
 function StoreListToStorage(controlName: string) {

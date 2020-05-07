@@ -15,6 +15,7 @@ export class Controller {
     private _fieldValue3: string = "";
     private _fieldName4: string = "";
     private _fieldValue4: string = "";
+    private _reposetory: string = "";
     private _inputs: IDictionaryStringTo<string>;
     private _model: Model;
     constructor() {
@@ -32,12 +33,14 @@ export class Controller {
         this._fieldValue3 = this._inputs["Field3"];
         this._fieldName4 = this._inputs["FieldName4"];
         this._fieldValue4 = this._inputs["Field4"];
+        this._reposetory = this._inputs["Reposetory"];
         WitService.WorkItemFormService.getService().then(
             (service) => {
                 Q.spread(
                     [
                         service.getFieldValue(this._editeList),
                         this._controlName,
+                        service.getFieldValue(this._reposetory),
                         this._fieldName1,
                         service.getFieldValue(this._fieldValue1),
                         this._fieldValue1,
@@ -51,12 +54,21 @@ export class Controller {
                         service.getFieldValue(this._fieldValue4),
                         this._fieldValue4
                     ],
-                    (editList: string, controlName: string,
+                    (editList: string, controlName: string, reposetory: string,
                         fieldName1: string, fieldValue1: string, fieldRefName1: string,
                         fieldName2: string, fieldValue2: string, fieldRefName2: string,
                         fieldName3: string, fieldValue3: string, fieldRefName3: string,
                         fieldName4: string, fieldValue4: string, fieldRefName4: string) => {
-                        RetriveValueList(controlName).then((doc) => {
+                        let repoInf: Array<string> = new Array<string>();
+                        if (reposetory == undefined) {
+                            repoInf.push("");
+                            repoInf.push("");
+                        }
+                        else {
+                            repoInf = reposetory.split(',');
+                        }
+                        let projectName = VSS.getWebContext().project.name;
+                        RetriveValueList(controlName,projectName).then((doc) => {
                             this._model = new Model(controlName, editList, doc,
                                 fieldName1, fieldValue1, fieldRefName1,
                                 fieldName2, fieldValue2, fieldRefName2,
