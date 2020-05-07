@@ -1,54 +1,57 @@
-import { StoreValueList, FieldValues } from "./StorageHelper";
+import { StoreValueList, FieldValues, RetriveValueList, GetValue } from "./StorageHelper";
 import GitRestClient = require("TFS/VersionControl/GitRestClient");
 import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
 
 let provider = () => {
     return {
-        execute: () => {
+        execute: (actionContext) => {
             LoaFile();
         },
     };
 };
 function LoaFile() {
-    let p = $("#uploadCsv");    
-    p.click(); 
+    let p = $("#uploadCsv");
+    p.click();
 }
 function FileSelected(input: JQuery) {
-    let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
-    let fileName: string = input.prop('value').toLowerCase();
-    if (regex.test(fileName)) {
-        let fileSplitPath = input.prop('value').toString().split("\\");
-        let controlName = fileSplitPath[fileSplitPath.length - 1].split('.')[0];
-        if (typeof (FileReader) != "undefined") {
-            let reader = new FileReader();
-            //For Browsers other than IE.
-            if (reader.readAsBinaryString) {
-                reader.onload = function (e) {
-                    let fileResult: string = e.target.result.toString();
-                    let projectName = VSS.getWebContext().project.name;
-                    MapValues(controlName, fileResult, projectName);
-                };
-                reader.readAsBinaryString(input.prop('files')[0]);
+    GetValue("RepoInfo").then((infos: { repoProject: string, repoName: string }) => {
+        let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
+        let fileName: string = input.prop('value').toLowerCase();
+        if (regex.test(fileName)) {
+            let fileSplitPath = input.prop('value').toString().split("\\");
+            let controlName = fileSplitPath[fileSplitPath.length - 1].split('.')[0];
+            if (typeof (FileReader) != "undefined") {
+                let reader = new FileReader();
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        let fileResult: string = e.target.result.toString();
+                        //let projectName = VSS.getWebContext().project.name;
+                        MapValues(controlName, fileResult, infos.repoProject,infos.repoName);
+                    };
+                    reader.readAsBinaryString(input.prop('files')[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        let data = "";
+                        //let bytes = new Uint8Array(e.target.result);
+                        //for (let i = 0; i < bytes.byteLength; i++) {
+                        //  data += String.fromCharCode(bytes[i]);
+                        //}
+                        //ProcessExcel(data);
+                    };
+                    reader.readAsArrayBuffer(input.prop('files')[0]);
+                }
             } else {
-                //For IE Browser.
-                reader.onload = function (e) {
-                    let data = "";
-                    //let bytes = new Uint8Array(e.target.result);
-                    //for (let i = 0; i < bytes.byteLength; i++) {
-                    //  data += String.fromCharCode(bytes[i]);
-                    //}
-                    //ProcessExcel(data);
-                };
-                reader.readAsArrayBuffer(input.prop('files')[0]);
+                alert("This browser does not support HTML5.");
             }
         } else {
-            alert("This browser does not support HTML5.");
+            alert("Please upload a valid Excel file.");
         }
-    } else {
-        alert("Please upload a valid Excel file.");
-    }
+        // }
+    })
 }
-function MapValues(controlName: string, fileResult: string, projectName: string) {
+function MapValues(controlName: string, fileResult: string, projectName: string, repoName: string) {
     let fieldsValuesList = {
         FieldsLists: new Array<Array<FieldValues>>()
     }
@@ -110,19 +113,19 @@ function MapValues(controlName: string, fileResult: string, projectName: string)
     fieldsValuesList.FieldsLists.push(level2List);
     fieldsValuesList.FieldsLists.push(level3List);
     fieldsValuesList.FieldsLists.push(level4List);
-    PushDoc(controlName, fieldsValuesList, fileResult, projectName);
+    PushDoc(controlName, fieldsValuesList, fileResult, projectName, repoName);
 }
-function PushDoc(controlName: string, fieldsValuesList, fileResult: string, projectName: string) {
+function PushDoc(controlName: string, fieldsValuesList, fileResult: string, projectName: string, repoName: string) {
     StoreValueList(controlName, fieldsValuesList);
-    PushToGit(fileResult, controlName, projectName);
+    PushToGit(fileResult, controlName, projectName, repoName);
     alert(controlName + " Value list updated.");
 }
 function CheckPermission() {
     // let securi = getClient().hasPermissions
 }
-function PushToGit(refName: string, controlName: string, projectName: string) {
-    let repostoryName: string = "PickerValuesList";
-    let project: string = VSS.getWebContext().project.name;
+function PushToGit(refName: string, controlName: string, projectName: string, repostoryName: string) {
+    //let repostoryName: string = "PickerValuesList";
+    //let project: string = VSS.getWebContext().project.name;
     let git: GitRestClient.GitHttpClient4 = GitRestClient.getClient();
     git.getRepository(repostoryName, projectName).then((repostory: GitRepository) => {
         if (repostory != undefined) {
@@ -137,7 +140,7 @@ function PushToGit(refName: string, controlName: string, projectName: string) {
                                 path: '/' + controlName + '.csv'
                             }
                         }];
-                        pushCommit(git, gitChanges, repostoryId, project, repostory, controlName);
+                        pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName); //project
                     });
                 }
                 catch{
@@ -148,7 +151,7 @@ function PushToGit(refName: string, controlName: string, projectName: string) {
                             path: '/' + controlName + '.csv'
                         }
                     }];
-                    pushCommit(git, gitChanges, repostoryId, project, repostory, controlName);
+                    pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName);  //project
                 }
             }
         }

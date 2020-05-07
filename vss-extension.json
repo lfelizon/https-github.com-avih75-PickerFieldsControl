@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Picker-Fields-Control",
-    "version": "1.1.55",
+    "version": "1.1.68",
     "name": "Picker Fields Control",
     "scopes": [
         "vso.code_full",
@@ -213,7 +213,7 @@
                         "description": "This field get the project name and the repository name, use for push the csv content to version control",
                         "type": "TextArea",
                         "validation": {
-                            "dataType": "Boolean",
+                            "dataType": "String",
                             "isRequired": false
                         }
                     }

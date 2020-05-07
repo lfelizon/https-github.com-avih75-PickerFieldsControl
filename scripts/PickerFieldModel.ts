@@ -1,4 +1,4 @@
-import { FieldValues, FieldsValuesList } from "./StorageHelper";
+import { FieldValues, FieldsValuesList, SetValue } from "./StorageHelper";
 export class Model {
     public editList: boolean = false;
     public fieldValuesList: FieldsValuesList;
@@ -7,8 +7,10 @@ export class Model {
     public fieldsName: Array<string>;
     public fieldsValue: Array<string>;
     public fieldsRefName: Array<string>;
+    public projectRepo: string;
+    public repoName: string;
 
-    constructor(controlName: string, editList: string, ValuesList: FieldsValuesList,
+    constructor(controlName: string, editList: string, ValuesList: FieldsValuesList, reposetory: string,
         fieldName1: string, fieldValue1: string, fieldRefName1: string,
         fieldName2: string, fieldValue2: string, fieldRefName2: string,
         fieldName3: string, fieldValue3: string, fieldRefName3: string,
@@ -19,6 +21,10 @@ export class Model {
         this.controlName = controlName;
         this.fieldValuesList = {
             FieldsLists: new Array<Array<FieldValues>>()
+        }
+        if (reposetory != undefined && reposetory != "") {
+            let infos = reposetory.split("\\");
+            SetValue("RepoInfo", { repoProject: infos[0], repoName: infos[1] });
         }
         this.fieldsName = new Array<string>();
         this.fieldsValue = new Array<string>();

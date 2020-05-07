@@ -40,7 +40,7 @@ export class Controller {
                     [
                         service.getFieldValue(this._editeList),
                         this._controlName,
-                        service.getFieldValue(this._reposetory),
+                        this._reposetory,
                         this._fieldName1,
                         service.getFieldValue(this._fieldValue1),
                         this._fieldValue1,
@@ -59,17 +59,9 @@ export class Controller {
                         fieldName2: string, fieldValue2: string, fieldRefName2: string,
                         fieldName3: string, fieldValue3: string, fieldRefName3: string,
                         fieldName4: string, fieldValue4: string, fieldRefName4: string) => {
-                        let repoInf: Array<string> = new Array<string>();
-                        if (reposetory == undefined) {
-                            repoInf.push("");
-                            repoInf.push("");
-                        }
-                        else {
-                            repoInf = reposetory.split(',');
-                        }
                         let projectName = VSS.getWebContext().project.name;
-                        RetriveValueList(controlName,projectName).then((doc) => {
-                            this._model = new Model(controlName, editList, doc,
+                        RetriveValueList(controlName, projectName).then((doc) => {
+                            this._model = new Model(controlName, editList, doc, reposetory,
                                 fieldName1, fieldValue1, fieldRefName1,
                                 fieldName2, fieldValue2, fieldRefName2,
                                 fieldName3, fieldValue3, fieldRefName3,
