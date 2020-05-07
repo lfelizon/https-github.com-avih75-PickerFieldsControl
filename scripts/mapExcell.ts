@@ -30,7 +30,8 @@ function FileSelected(input: JQuery) {
             if (reader.readAsBinaryString) {
                 reader.onload = function (e) {
                     let fileResult: string = e.target.result.toString();
-                    MapValues(controlName, fileResult);
+                    let projectName = VSS.getWebContext().project.name;
+                    MapValues(controlName, fileResult, projectName);
                 };
                 reader.readAsBinaryString(input.prop('files')[0]);
             } else {
@@ -52,7 +53,7 @@ function FileSelected(input: JQuery) {
         alert("Please upload a valid Excel file.");
     }
 }
-function MapValues(controlName: string, fileResult: string) {
+function MapValues(controlName: string, fileResult: string, projectName: string) {
     let fieldsValuesList = {
         FieldsLists: new Array<Array<FieldValues>>()
     }
@@ -114,21 +115,21 @@ function MapValues(controlName: string, fileResult: string) {
     fieldsValuesList.FieldsLists.push(level2List);
     fieldsValuesList.FieldsLists.push(level3List);
     fieldsValuesList.FieldsLists.push(level4List);
-    PushDoc(controlName, fieldsValuesList, fileResult);
+    PushDoc(controlName, fieldsValuesList, fileResult, projectName);
 }
-function PushDoc(controlName: string, fieldsValuesList, fileResult: string) {
+function PushDoc(controlName: string, fieldsValuesList, fileResult: string, projectName: string) {
     StoreValueList(controlName, fieldsValuesList);
-    PushToGit(fileResult, controlName);
+    PushToGit(fileResult, controlName, projectName);
     alert(controlName + " Value list updated.");
 }
 function CheckPermission() {
     // let securi = getClient().hasPermissions
 }
-function PushToGit(refName: string, controlName: string) {
+function PushToGit(refName: string, controlName: string, projectName: string) {
     let repostoryName: string = "PickerValuesList";
     let project: string = VSS.getWebContext().project.name;
     let git: GitRestClient.GitHttpClient4 = GitRestClient.getClient();
-    git.getRepository(repostoryName).then((repostory: GitRepository) => {
+    git.getRepository(repostoryName, projectName).then((repostory: GitRepository) => {
         let repostoryId = repostory.id;
         let gitChanges: GitChange[] = [<GitChange>{
             changeType: 1,
