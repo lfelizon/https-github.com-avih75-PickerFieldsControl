@@ -49,5 +49,15 @@ add the control to the view
 
 ![Layout Customization](img/F3.png)
 
+# Keep your lists values under Git 
+
+just create in any project new repository
+add the parameters to repostitory field in the control "ProjectName\RepositoryName"
+
+![Layout Customization](img/G1.png)
+
+any time you upload a values list file to the system, it will be pushed to the git
+
+![Layout Customization](img/G2.png)
 
 Contact me avih75@gmail.com
