@@ -27,7 +27,7 @@ function FileSelected(input: JQuery) {
                     reader.onload = function (e) {
                         let fileResult: string = e.target.result.toString();
                         //let projectName = VSS.getWebContext().project.name;
-                        MapValues(controlName, fileResult, infos.repoProject,infos.repoName);
+                        MapValues(controlName, fileResult, infos.repoProject, infos.repoName);
                     };
                     reader.readAsBinaryString(input.prop('files')[0]);
                 } else {
@@ -124,35 +124,29 @@ function CheckPermission() {
     // let securi = getClient().hasPermissions
 }
 function PushToGit(refName: string, controlName: string, projectName: string, repostoryName: string) {
-    //let repostoryName: string = "PickerValuesList";
-    //let project: string = VSS.getWebContext().project.name;
     let git: GitRestClient.GitHttpClient4 = GitRestClient.getClient();
     git.getRepository(repostoryName, projectName).then((repostory: GitRepository) => {
         if (repostory != undefined) {
             let repostoryId = repostory.id;
             if (typeof (repostoryId) === "string") {
-                try {
-                    git.getItem(repostoryId, controlName + ".csv").then((item) => {
-                        let gitChanges: GitChange[] = [<GitChange>{
-                            changeType: 2, // 1-add  2- edit
-                            newContent: <ItemContent>{ content: refName, contentType: 0 }, //0-> RawText = 0, Base64Encoded = 1,
-                            item: <GitItem>{
-                                path: '/' + controlName + '.csv'
-                            }
-                        }];
-                        pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName); //project
-                    });
-                }
-                catch{
+                let gitChanges: GitChange[] = [<GitChange>{
+                    changeType: 1, // 1-add  2- edit
+                    newContent: <ItemContent>{ content: refName, contentType: 0 }, //0-> RawText = 0, Base64Encoded = 1,
+                    item: <GitItem>{
+                        path: '/' + controlName + '.csv'
+                    }
+                }];
+                pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName, 'Upload New File');  //project
+                git.getItem(repostoryId, controlName + ".csv").then((item) => {
                     let gitChanges: GitChange[] = [<GitChange>{
-                        changeType: 1, // 1-add  2- edit
+                        changeType: 2, // 1-add  2- edit
                         newContent: <ItemContent>{ content: refName, contentType: 0 }, //0-> RawText = 0, Base64Encoded = 1,
                         item: <GitItem>{
                             path: '/' + controlName + '.csv'
                         }
                     }];
-                    pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName);  //project
-                }
+                    pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName, 'Upload Edited File'); //project
+                });
             }
         }
         else {
@@ -160,11 +154,11 @@ function PushToGit(refName: string, controlName: string, projectName: string, re
         }
     })
 }
-function pushCommit(git: GitRestClient.GitHttpClient4, gitChanges: GitChange[], repostoryId: string, project: string, repostory: GitRepository, controlName: string) {
+function pushCommit(git: GitRestClient.GitHttpClient4, gitChanges: GitChange[], repostoryId: string, project: string, repostory: GitRepository, controlName: string, message: string) {
     let gitCommitRef: GitCommitRef[] = [
         <GitCommitRef>{
             changes: gitChanges,
-            comment: 'Push a file'
+            comment: message
         }
     ]
     git.getRefs(repostoryId, project).then((refs) => {
