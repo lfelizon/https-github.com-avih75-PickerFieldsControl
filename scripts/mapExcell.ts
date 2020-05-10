@@ -11,7 +11,7 @@ let provider = () => {
 };
 function LoaFile() {
     let p = $("#uploadCsv");
-    p.click();
+    p.trigger('click'); 
 }
 function FileSelected(input: JQuery) {
     GetValue("RepoInfo").then((infos: { repoProject: string, repoName: string }) => {
@@ -25,8 +25,7 @@ function FileSelected(input: JQuery) {
                 //For Browsers other than IE.
                 if (reader.readAsBinaryString) {
                     reader.onload = function (e) {
-                        let fileResult: string = e.target.result.toString();
-                        //let projectName = VSS.getWebContext().project.name;
+                        let fileResult: string = e.target.result.toString(); 
                         MapValues(controlName, fileResult, infos.repoProject, infos.repoName);
                     };
                     reader.readAsBinaryString(input.prop('files')[0]);
@@ -34,6 +33,7 @@ function FileSelected(input: JQuery) {
                     //For IE Browser.
                     reader.onload = function (e) {
                         let data = "";
+                        alert('not chrom');
                         //let bytes = new Uint8Array(e.target.result);
                         //for (let i = 0; i < bytes.byteLength; i++) {
                         //  data += String.fromCharCode(bytes[i]);
