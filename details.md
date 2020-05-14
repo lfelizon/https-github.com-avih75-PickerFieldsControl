@@ -1,7 +1,7 @@
 Summary : This control is designed to allow the user to create lists of selectable values ​​that depend on other lists. Currently the control is capable of concatenating 2 to 4 lists.
 Most of you used to use the global list when working with xml, but when there are many dependencies between several fields, many lists are created and the code in xml gets complicated, and the global list became huge.
-Also, when we work in cloud, the use of the global list its not avaliable
-I believe some of you have found other solutions and other extensions. This extension is built for a specific additional need, and its to upload the dependent lists by a simple CSV file. So they can be easily managed.
+Also, when we work in cloud, the use of the global list its not avaliable.
+This extension is built for a specific additional need, and its to upload the dependent lists by a simple CSV file. So they can be easily be managed.the control can push to git the csv file every time you upload it.
 In this extension, i use the stack service of the Azure DevOps (TFS);
 
 # Deffine the extension in Azure DevOps

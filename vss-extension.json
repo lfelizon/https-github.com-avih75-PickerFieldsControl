@@ -1,8 +1,8 @@
 {
     "manifestVersion": 1,
-    "id": "Picker-Fields-Control",
-    "version": "1.1.80",
-    "name": "Picker Fields Control",
+    "id": "Multi-Pickers-Fields-Control",
+    "version": "1.1.100",
+    "name": "Multi Pickers Fields Control",
     "scopes": [
         "vso.code_full",
         "vso.work",
@@ -12,7 +12,7 @@
         "vso.project",
         "vso.security_manage"
     ],
-    "description": "Let Pick values for field from a specific list",
+    "description": "Pick value from filtered list",
     "publisher": "AviHadad",
     "icons": {
         "default": "img/logo.png"
@@ -26,7 +26,8 @@
         "Work Item control",
         "Usability",
         "Picker",
-        "List Values",
+        "Multi Pickers",
+        "Multi List Values",
         "Storage",
         "List"
     ],
@@ -69,14 +70,14 @@
         "Plan and track"
     ],
     "contributions": [{
-            "id": "Picker_Fields_Control",
+            "id": "Multi_Pickers_Fields_Control",
             "description": "Group values from several fields, and calculate new value. regarding the requested functionality",
             "type": "ms.vss-work-web.work-item-form-control",
             "targets": [
                 "ms.vss-work-web.work-item-form"
             ],
             "properties": {
-                "name": "Picker Fields with dependencies",
+                "name": "Multi Pickers Fields with dependencies",
                 "uri": "index.html",
                 "height": 200,
                 "inputs": [{

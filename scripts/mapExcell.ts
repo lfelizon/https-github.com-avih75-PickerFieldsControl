@@ -1,19 +1,17 @@
-import { StoreValueList, FieldValues, RetriveValueList, GetValue } from "./StorageHelper";
+import { StoreValueList, FieldValues, GetValue } from "./StorageHelper";
 import GitRestClient = require("TFS/VersionControl/GitRestClient");
 import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
 
 let provider = () => {
     return {
         execute: (actionContext) => {
-            LoaFile();
-        },
+            let input = $("#uploadCsv");
+            let x = input.click();
+        }
     };
 };
-function LoaFile() {
-    let p = $("#uploadCsv");
-    p.trigger('click'); 
-}
-function FileSelected(input: JQuery) {
+function FileSelected(e: JQueryEventObject) {
+    let input = $("#uploadCsv");
     GetValue("RepoInfo").then((infos: { repoProject: string, repoName: string }) => {
         let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
         let fileName: string = input.prop('value').toLowerCase();
@@ -25,7 +23,7 @@ function FileSelected(input: JQuery) {
                 //For Browsers other than IE.
                 if (reader.readAsBinaryString) {
                     reader.onload = function (e) {
-                        let fileResult: string = e.target.result.toString(); 
+                        let fileResult: string = e.target.result.toString();
                         MapValues(controlName, fileResult, infos.repoProject, infos.repoName);
                     };
                     reader.readAsBinaryString(input.prop('files')[0]);
@@ -48,7 +46,6 @@ function FileSelected(input: JQuery) {
         } else {
             alert("Please upload a valid Excel file.");
         }
-        // }
     })
 }
 function MapValues(controlName: string, fileResult: string, projectName: string, repoName: string) {
@@ -116,9 +113,10 @@ function MapValues(controlName: string, fileResult: string, projectName: string,
     PushDoc(controlName, fieldsValuesList, fileResult, projectName, repoName);
 }
 function PushDoc(controlName: string, fieldsValuesList, fileResult: string, projectName: string, repoName: string) {
-    StoreValueList(controlName, fieldsValuesList);
-    PushToGit(fileResult, controlName, projectName, repoName);
-    alert(controlName + " Value list updated.");
+    StoreValueList(controlName, fieldsValuesList).then(() => {
+        PushToGit(fileResult, controlName, projectName, repoName)
+        alert(controlName + " Value list updated.");
+    })
 }
 function CheckPermission() {
     // let securi = getClient().hasPermissions
@@ -147,6 +145,7 @@ function PushToGit(refName: string, controlName: string, projectName: string, re
                     }];
                     pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName, 'Upload Edited File'); //project
                 });
+
             }
         }
         else {
@@ -181,8 +180,8 @@ function pushCommit(git: GitRestClient.GitHttpClient4, gitChanges: GitChange[], 
         }
     })
 }
-let input = $("#uploadCsv").change(() => {
+$("#uploadCsv").change((e) => {
     CheckPermission();
-    FileSelected(input);
+    FileSelected(e);
 })
 VSS.register(VSS.getContribution().id, provider); 
