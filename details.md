@@ -13,13 +13,12 @@ FieldName (1-4) : this is the field name (that what the user see)
 Field(1-4) : this is the value that the user select.
 fieldName and Field 3/4 are optional (if you want to cascade more the 2 lists).
 
-![Layout Customization](img/A.png)
-![Layout Customization](img/B.png)
+![Layout Customization](img/A.png) 
 
 # Create CSV File
 
 Create Your CSV file, you can put thousend of values
-pay attenshion to write the values correctly, and do not add spaces in the end of the value
+pay attenshion to write the values correctly, avoid adding spaces in the end of the value (will create new value, its a string)
 save the file ... file name must be as the name of the control name -> controlName.csv
 
 ![Layout Customization](img/C.png)

@@ -213,7 +213,7 @@
         },
         {
             "id": "myAction",
-            "description": "Run in Hello hub action",
+            "description": "Run an Upload file in work item actions menus",
             "type": "ms.vss-web.action",
             "targets": [
                 "ms.vss-work-web.work-item-context-menu"
