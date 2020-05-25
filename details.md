@@ -6,12 +6,14 @@ In this extension, i use the stack service of the Azure DevOps (TFS);
 
 # Deffine the extension in Azure DevOps
 
-There is nine Inputs parameters, four of them are optional.
-Control Name : this is the name of the control (you can put more then one), and it use this name to save the list
-               values in the storage, so it is importent to put logic names.
-FieldName (1-4) : this is the field name (that what the user see)
-Field(1-4) : this is the value that the user select.
-fieldName and Field 3/4 are optional (if you want to cascade more the 2 lists).
+There is ten Inputs parameters, four of them are optional.
+Control Name    : this is the name of the control (you can put more then one in work item),
+                  and it use this name to save the list values in the storage, so it is importent to put logic names.
+FieldName (1-4) : this is the field name that effects on the user sees view only.
+Field(1-4)      : this is the value that the user pickes, need to get field of the work item.
+Reposetory      : this use for save the csv file in git version control. (optional).
+                  to use this feature just insert the project name and the reposetory name that you want to save the file in it. (ProjectName\ReposetoryName)
+FieldName (3,4) and Field (3,4) are optional (if you want to cascade more the 2 lists).
 
 ![Layout Customization](img/A.png) 
 
@@ -19,13 +21,16 @@ fieldName and Field 3/4 are optional (if you want to cascade more the 2 lists).
 
 Create Your CSV file, you can put thousend of values
 pay attenshion to write the values correctly, avoid adding spaces in the end of the value (will create new value, its a string)
-save the file ... file name must be as the name of the control name -> controlName.csv
+the cvs file name can also set the projectName, so each project can use deffrent lists (if you want to use same control name)
+save the file :
+                file name must be as the name of the control (name -> controlName.csv), that deffine this list as an generic list for all the controls that have this name.
+                if you want a specific list for a project, make shure you save the file name with the project name (name -> controlName_projectName.csv), it looks for a specific project first, and if not, he looks for the generic list.
 
 ![Layout Customization](img/C.png)
 
 # Upload the CSV file
 
-use the action menu added in the work item Form.
+use the action menu added in the work item Form. (works only in chrome)
 "Upload Dependencies"
 
 ![Layout Customization](img/D.png)

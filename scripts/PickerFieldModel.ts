@@ -33,22 +33,24 @@ export class Model {
         this.fieldsValue.push(fieldValue1);
         this.fieldsRefName.push(fieldRefName1);
         this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[0]); // if empty/undefine...
-        this.fieldsName.push(fieldName2);
-        this.fieldsValue.push(fieldValue2);
-        this.fieldsRefName.push(fieldRefName2);
-        this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[1]); // if empty/undefine...
-        if (fieldName3 != null && fieldName3 != undefined && fieldValue3 != null && fieldValue3 != undefined) {
-            this.fieldsName.push(fieldName3);
-            this.fieldsValue.push(fieldValue3);
-            this.fieldsRefName.push(fieldRefName3);
-            this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[2]); // if empty/undefine...
-            if (fieldName4 != null && fieldName4 != undefined && fieldValue4 != null && fieldValue4 != undefined) {
-                this.fieldsName.push(fieldName4);
-                this.fieldsValue.push(fieldValue4);
-                this.fieldsRefName.push(fieldRefName4);
-                this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[3]);  // if empty/undefine...
+        //if (fieldName2 != null && fieldName2 != undefined && fieldValue2 != null && fieldValue2 != undefined) {
+            this.fieldsName.push(fieldName2);
+            this.fieldsValue.push(fieldValue2);
+            this.fieldsRefName.push(fieldRefName2);
+            this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[1]); // if empty/undefine...
+            if (fieldName3 != null && fieldName3 != undefined && fieldValue3 != null && fieldValue3 != undefined) {
+                this.fieldsName.push(fieldName3);
+                this.fieldsValue.push(fieldValue3);
+                this.fieldsRefName.push(fieldRefName3);
+                this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[2]); // if empty/undefine...
+                if (fieldName4 != null && fieldName4 != undefined && fieldValue4 != null && fieldValue4 != undefined) {
+                    this.fieldsName.push(fieldName4);
+                    this.fieldsValue.push(fieldValue4);
+                    this.fieldsRefName.push(fieldRefName4);
+                    this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[3]);  // if empty/undefine...
+                }
             }
-        }
+        //}
         this.fieldsQuantity = this.fieldsName.length.toString();
     }
 }

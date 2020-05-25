@@ -28,7 +28,6 @@ export async function RetriveValueList(key1: string, key2: string) {
     }
     return result;
 }
-
 export async function GetValue(key: string) {
     let dataService: any = await VSS.getService(VSS.ServiceIds.ExtensionData);
     let result: { repoProject: string, repoName: string } = await dataService.getValue(key);

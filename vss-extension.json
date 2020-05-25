@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Multi-Pickers-Fields-Control",
-    "version": "1.1.100",
+    "version": "1.1.106",
     "name": "Multi Pickers Fields Control",
     "scopes": [
         "vso.code_full",
@@ -219,10 +219,10 @@
                 "ms.vss-work-web.work-item-context-menu"
             ],
             "properties": {
-                "text": "Upload Dependencies",
-                "title": "Upload Excell Dependencies file",
+                "text": "Upload Picker csv",
+                "title": "Upload Picker control CSV Dependencies file",
                 "icon": "img/icon.png",
-                "groupId": "actions",
+                "groupId": "Picker",
                 "uri": "action.html"
             }
         }
