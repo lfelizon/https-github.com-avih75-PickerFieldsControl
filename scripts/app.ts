@@ -23,4 +23,3 @@ var provider = () => {
 };
 
 VSS.register(VSS.getContribution().id, provider);
-VSS.resize();

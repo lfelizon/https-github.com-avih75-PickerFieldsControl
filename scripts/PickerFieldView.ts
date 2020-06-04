@@ -15,6 +15,8 @@ export class View {
         $(".container").remove();
         var container = $("<div />");
         container.addClass("container");
+        let size = 36 * this.model.fieldValuesList.FieldsLists.length;
+        VSS.resize(size, size);
         for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
             if (this.model.fieldsValue[0] == "") {
                 container.append(this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
@@ -94,7 +96,7 @@ export class View {
             this.model.fieldsValue[fieldNumber] = "";
         }
         let select: string = $("#" + fieldNumber).children("option:selected").val();
-        this.model.fieldsValue[fieldNumber - 1] = select; 
+        this.model.fieldsValue[fieldNumber - 1] = select;
         this.updateWorkItem();
         //}
         if (fieldNumber < 4) {

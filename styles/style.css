@@ -1,13 +1,14 @@
-.container {
+/* .container {
     padding-left: 1px;
-}
+} */
 
-.buttons {
+
+/* .buttons {
     padding: 2px;
     margin: 5px;
     background-color: lightblue;
     color: blue;
-}
+} */
 
 .label {
     width: 100%;
@@ -21,12 +22,13 @@
     flex-grow: 1;
 }
 
-.container>.bowtie-icon {
+
+/* .container>.bowtie-icon {
     font-size: 24px;
     color: lightgray;
     margin: 2px 2px 2px 2px;
     cursor: pointer;
-}
+} */
 
 .bowtie-icon.focus,
 .bowtie-icon:hover {

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" style="height:100%">
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -8,9 +8,6 @@
 
     <title>Picker Fields Control</title>
     <link rel="stylesheet" href="styles/style.css" type="text/css" />
-</head>
-
-<body style="height:100%">
     <script>
         VSS.init({
             explicitNotifyLoaded: true,
@@ -18,10 +15,12 @@
             usePlatformStyles: true,
             configureModuleLoader: true
         });
+
         VSS.require(["scripts/app"], function() {
             VSS.notifyLoadSucceeded();
         });
+        // VSS.resize(150, 150);
     </script>
-</body>
+</head>
 
 </html>
