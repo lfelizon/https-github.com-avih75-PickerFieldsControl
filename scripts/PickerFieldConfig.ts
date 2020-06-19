@@ -3,14 +3,14 @@ import GitRestClient = require("TFS/VersionControl/GitRestClient");
 import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
 let toArrayBuffer = require('to-array-buffer')
 
-let provider = () => {
-    return {
-        execute: (actionContext) => {
-            let input = $("#uploadCsv");
-            let x = input.click();
-        }
-    };
-};
+// let provider = () => {
+//     return {
+//         execute: (actionContext) => {
+//             let input = $("#uploadCsv");
+//             let x = input.click();
+//         }
+//     };
+// };
 function FileSelected(e: JQueryEventObject) {
     let input = $("#uploadCsv");
     GetValue("RepoInfo").then((infos: { repoProject: string, repoName: string }) => {
@@ -186,4 +186,4 @@ $("#uploadCsv").change((e) => {
     CheckPermission();
     FileSelected(e);
 })
-VSS.register(VSS.getContribution().id, provider); 
+VSS.register(VSS.getContribution().id, this); 

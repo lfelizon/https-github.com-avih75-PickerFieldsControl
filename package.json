@@ -34,6 +34,7 @@
     "dependencies": {
         "@types/node": "^13.7.7",
         "azure-devops-node-api": "^10.1.0",
-        "http-proxy-agent": "^4.0.1"
+        "http-proxy-agent": "^4.0.1",
+        "to-array-buffer": "^3.2.0"
     }
 }
