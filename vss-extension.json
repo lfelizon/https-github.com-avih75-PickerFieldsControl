@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Multi-Pickers-Fields-Control",
-    "version": "1.1.140",
+    "version": "1.1.162",
     "name": "Multi Pickers Fields Control",
     "scopes": [
         "vso.code_full",
@@ -58,15 +58,15 @@
             "addressable": true
         },
         {
+            "path": "configCsvHub.html",
+            "addressable": true
+        },
+        {
             "path": "index.html",
             "addressable": true
         },
         {
             "path": "action.html",
-            "addressable": true
-        },
-        {
-            "path": "multiPickerConfig.html",
             "addressable": true
         }
     ],
@@ -238,8 +238,9 @@
                 "ms.vss-web.collection-admin-hub-group"
             ],
             "properties": {
-                "name": "MultiPicker",
-                "uri": "multiPickerConfig.html"
+                "name": "Multi Picker",
+                "uri": "index.html",
+                "order": 99
             }
         }
     ]
