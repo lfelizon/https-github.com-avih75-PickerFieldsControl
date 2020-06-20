@@ -1,7 +1,7 @@
 import { StoreValueList, FieldValues, GetValue } from "./StorageHelper";
 import GitRestClient = require("TFS/VersionControl/GitRestClient");
 import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
-let toArrayBuffer = require('to-array-buffer')
+//let toArrayBuffer = require('to-array-buffer')
 
 let provider = () => {
     return {
@@ -29,18 +29,18 @@ function FileSelected(e: JQueryEventObject) {
                     };
                     reader.readAsBinaryString(input.prop('files')[0]);
                 } else {
-                    //For IE Browser.
-                    reader.onload = function (e) {
-                        let data = "";
-                        alert('not chrom');
-                        let c: ArrayBuffer = toArrayBuffer(e.target.result);
-                        let bytes = new Uint8Array(c)
-                        for (let i = 0; i < bytes.byteLength; i++) {
-                            data += String.fromCharCode(bytes[i]);
-                        }
-                        MapValues(controlName, data, infos.repoProject, infos.repoName);
-                    };
-                    reader.readAsArrayBuffer(input.prop('files')[0]);
+                    // //For IE Browser.
+                    // reader.onload = function (e) {
+                    //     let data = "";
+                    //     alert('not chrom');
+                    //     let c: ArrayBuffer = toArrayBuffer(e.target.result);
+                    //     let bytes = new Uint8Array(c)
+                    //     for (let i = 0; i < bytes.byteLength; i++) {
+                    //         data += String.fromCharCode(bytes[i]);
+                    //     }
+                    //     MapValues(controlName, data, infos.repoProject, infos.repoName);
+                    // };
+                    // reader.readAsArrayBuffer(input.prop('files')[0]);
                 }
             } else {
                 alert("This browser does not support HTML5.");

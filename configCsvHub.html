@@ -1,16 +1,33 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8" />
+    <script src="scripts/VSS.SDK.min.js"></script>
+    <title>Picker Fields Control</title>
+    <script>
+        VSS.init({
+            explicitNotifyLoaded: true,
+            usePlatformScripts: true,
+            usePlatformStyles: true,
+            configureModuleLoader: true
+        });
 
+        VSS.require(["scripts/mapExcell"], function() {
+            VSS.notifyLoadSucceeded();
+        });
+        // VSS.resize(150, 150);
+    </script>
 </head>
 
 <body>
-
-    <p>
-        You should create a CSV file with the control name as the file name, you can put the name of the project and '_' befor the control name as the file name, to specify the specific project.
-    </p>
-
-
+    <div>
+        <label style="font-size: xx-large;color: blue;">Multi Picker Configuration - Upload CSV file</label>
+        <input type="file" id="uploadCsv" style="margin: 20;" />
+        <p style="font-size: large;">
+            here you should upload CSV file, the file name should be as the control name.
+        </p>
+    </div>
 </body>
 
 </html>
