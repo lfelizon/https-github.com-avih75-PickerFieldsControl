@@ -1,16 +1,33 @@
-import { StoreValueList, FieldValues, GetValue } from "./StorageHelper";
+import { StoreValueList, FieldValues, GetValue, RetriveControlList, ControlsNames, StoreControlList } from "./StorageHelper";
 import GitRestClient = require("TFS/VersionControl/GitRestClient");
 import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
-let toArrayBuffer = require('to-array-buffer')
+//import { Control } from "VSS/Controls";
+//ArrayBuffer = require('to-array-buffer');
 
-// let provider = () => {
-//     return {
-//         execute: (actionContext) => {
-//             let input = $("#uploadCsv");
-//             let x = input.click();
-//         }
-//     };
-// };
+let provider = () => {
+    return {
+        execute: (actionContext) => {
+
+        }
+    };
+};
+function InitP() {
+    $("#uploadCsv").change((e) => {
+        FileSelected(e);
+    })
+    VSS.resize();
+    RetriveControlList().then((controlList) => {
+        let $ulList = $("#CollectionControlList");
+        controlList.forEach(control => {
+            let $il = $("<li />");
+            if (control.projectName == "" || control.fileName == undefined) {
+                control.projectName = "Collection";
+            }
+            $il.text("scope : " + control.projectName + " control name : " + control.controlName + " file name : " + control.fileName);
+            $ulList.append($il);
+        });
+    });
+}
 function FileSelected(e: JQueryEventObject) {
     let input = $("#uploadCsv");
     GetValue("RepoInfo").then((infos: { repoProject: string, repoName: string }) => {
@@ -28,20 +45,20 @@ function FileSelected(e: JQueryEventObject) {
                         MapValues(controlName, fileResult, infos.repoProject, infos.repoName);
                     };
                     reader.readAsBinaryString(input.prop('files')[0]);
-                } else {
-                    //For IE Browser.
-                    reader.onload = function (e) {
-                        let data = "";
-                        alert('not chrom');
-                        let c: ArrayBuffer = toArrayBuffer(e.target.result);
-                        let bytes = new Uint8Array(c)
-                        for (let i = 0; i < bytes.byteLength; i++) {
-                            data += String.fromCharCode(bytes[i]);
-                        }
-                        MapValues(controlName, data, infos.repoProject, infos.repoName);
-                    };
-                    reader.readAsArrayBuffer(input.prop('files')[0]);
-                }
+                } //else {
+                //For IE Browser.
+                // reader.onload = function (e) {
+                //     let data = "";
+                //     alert('not chrom');
+                //     let c: ArrayBuffer = toArrayBuffer(e.target.result);
+                //     let bytes = new Uint8Array(c)
+                //     for (let i = 0; i < bytes.byteLength; i++) {
+                //         data += String.fromCharCode(bytes[i]);
+                //     }
+                //     MapValues(controlName, data, infos.repoProject, infos.repoName);
+                // };
+                // reader.readAsArrayBuffer(input.prop('files')[0]);
+                //}
             } else {
                 alert("This browser does not support HTML5.");
             }
@@ -116,12 +133,31 @@ function MapValues(controlName: string, fileResult: string, projectName: string,
 }
 function PushDoc(controlName: string, fieldsValuesList, fileResult: string, projectName: string, repoName: string) {
     StoreValueList(controlName, fieldsValuesList).then(() => {
+        RetriveControlList().then((controlList) => {
+            let flag = false;
+            controlList.forEach(control => {
+                if (control.fileName == controlName) {
+                    flag = true;
+                }
+            });
+            if (!flag) {
+                let control: ControlsNames = {
+                    controlName: controlName,
+                    fileName: "controlName.csv",
+                    projectName: ""
+                }
+                controlList.push(control);
+                let $ulList = $("#CollectionControlList");
+                let $il = $("<li />");
+                $il.text(`scope : ${control.projectName}, control name : ${control.controlName}, file name : ${control.fileName}`);
+                $ulList.append($il);
+            }
+            StoreControlList(controlList);
+            controlList.push();
+        });
         PushToGit(fileResult, controlName, projectName, repoName)
         alert(controlName + " Value list updated.");
     })
-}
-function CheckPermission() {
-    // let securi = getClient().hasPermissions
 }
 function PushToGit(refName: string, controlName: string, projectName: string, repostoryName: string) {
     let git: GitRestClient.GitHttpClient4 = GitRestClient.getClient();
@@ -182,8 +218,10 @@ function pushCommit(git: GitRestClient.GitHttpClient4, gitChanges: GitChange[], 
         }
     })
 }
-$("#uploadCsv").change((e) => {
-    CheckPermission();
-    FileSelected(e);
-})
-VSS.register(VSS.getContribution().id, this); 
+
+VSS.register(VSS.getContribution().id, provider);
+InitP();
+
+// get the uploaded list
+// show it
+// on load new... add it to the list and add to view
