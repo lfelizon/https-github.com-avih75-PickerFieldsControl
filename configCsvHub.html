@@ -24,8 +24,8 @@
     <div id="Title">
         <label style="font-size: xx-large;color: blue; position: relative; left: 20%;">Multi Picker Configuration - Collection Scope</label>
     </div>
-    <div id="tab" class="tab" style="height: 100;">
-        <button class="tablinks" id="Configuration" onclick="selectTab(event, 'Configurations')">Configurations</button>
+    <div id="tab" class="tab">
+        <button class="tablinks" onclick="selectTab(event, 'Configurations')" id="Configuration">Configurations</button>
         <button class="tablinks" onclick="selectTab(event, 'Instruction')">Installation - Instruction</button>
         <button class="tablinks" onclick="selectTab(event, 'About')">About</button>
     </div>
@@ -166,7 +166,7 @@
 
     <div id="About" class="tabcontent">
         <h3>About</h3>
-        <p>Tokyo is the capital of Japan.</p>
+        <p>.</p>
     </div>
     <script>
         function selectTab(evt, tabName) {
