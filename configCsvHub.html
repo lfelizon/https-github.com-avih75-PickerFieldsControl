@@ -31,7 +31,7 @@
     </div>
 
     <div id="Configurations" class="tabcontent">
-        <div style="border:1px solid gray">
+        <div style="border:1px solid gray;visibility: hidden;">
             <div>
                 <label style="font-size: large;color: blue;">Configure History - Git Repository</label>
             </div>
@@ -48,38 +48,39 @@
         </div>
         <div style="border:1px solid gray">
             <label label style="font-size: large;color: blue;">Collection Scoped Controls :</label>
-            <ul class="CollectionControlList" id="CollectionControlList"></ul>
+            <ul style="position: relative; left: 10px;" class="CollectionControlList" id="CollectionControlList"></ul>
         </div>
         <div style="border:1px solid gray">
             <dvi>
                 <label style="font-size: large;color: blue;">Upload pickers values by CSV file</label>
             </dvi>
-            <div id="csvFile">
+            <div id="csvFile" style="position: relative; left: 10px; top: 10px;">
                 <input type="file" id="uploadCsv" style="margin: 20;" title="load" />
                 <button id="uploadFile">Upload</button>
                 <label style="font-size: small;">(The file name should be as the control name.)</label>
             </div>
+            <br/>
         </div>
         <div style="border:1px solid gray">
             <div>
                 <label style="font-size: large;color: blue;">Upload picker values Manualy from the CSV Content File</label>
             </div>
-            <div>
+            <div style="position: relative; left: 10px;">
                 <label>File full name:</label>
-                <input type="text" id="fileName" style="margin: 20;" title="File full name" />
+                <input type="text" id="fileName" title="File full name" />
                 <label style="font-size: small;">(Without the extenshion name)</label>
             </div>
-            <div id="stringBox">
+            <div id="stringBox" style="position: relative; left: 10px;">
                 <label>CSV fie content:</label>
                 <label style="font-size: small;">(open it as text, and copy the content)</label>
             </div>
             <div>
-                <textarea id="uploadString" style="position: relative; left: 10px;" rows="20" cols="40" title="Csv File Content"></textarea>
+                <textarea id="uploadString" style="position: relative; left: 20px;" rows="20" cols="40" title="Csv File Content"></textarea>
+            </div>
+            <div>
+                <button id="uploadContent" style="position: relative; left: 30px; top: 10px;">Generate</button>
             </div>
             <br/>
-            <div>
-                <button id="uploadContent" style="position: relative; left: 20px;">Generate</button>
-            </div>
         </div>
     </div>
 
