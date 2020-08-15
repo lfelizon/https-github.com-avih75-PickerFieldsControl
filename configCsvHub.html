@@ -11,7 +11,8 @@
             explicitNotifyLoaded: true,
             usePlatformScripts: true,
             usePlatformStyles: true,
-            configureModuleLoader: true
+            configureModuleLoader: true,
+            applyTheme: true
         });
         VSS.require(["scripts/PickerFieldConfig"], function() {
             VSS.notifyLoadSucceeded();
@@ -20,24 +21,65 @@
 </head>
 
 <body style="overflow: auto;">
-    <div>
-        <label style="font-size: xx-large;color: blue;">Multi Picker Configuration - Collection Scope</label>
+    <div id="Title">
+        <label style="font-size: xx-large;color: blue; position: relative; left: 20%;">Multi Picker Configuration - Collection Scope</label>
     </div>
-    <div class="tab">
-        <button class="tablinks" id="Configuration" onclick="openCity(event, 'Configurations')">Configurations</button>
-        <button class="tablinks" onclick="openCity(event, 'Instruction')">Instruction</button>
-        <button class="tablinks" onclick="openCity(event, 'About')">About</button>
+    <div id="tab" class="tab" style="height: 100;">
+        <button class="tablinks" id="Configuration" onclick="selectTab(event, 'Configurations')">Configurations</button>
+        <button class="tablinks" onclick="selectTab(event, 'Instruction')">Installation - Instruction</button>
+        <button class="tablinks" onclick="selectTab(event, 'About')">About</button>
     </div>
 
     <div id="Configurations" class="tabcontent">
-        <label style="font-size: x-large;color: blue;">select CSV file</label>
-        <input type="file" id="uploadCsv" style="margin: 20;" title="load" />
-        <label style="font-size: large;">
-            here you should upload CSV file, the file name should be as the control name.
-        </label>
-        <div>
-            <label>Collection Scoped Controls :</label>
+        <div style="border:1px solid gray">
+            <div>
+                <label style="font-size: large;color: blue;">Configure History - Git Repository</label>
+            </div>
+            <div id="gitRepo">
+                <input type="checkbox" />
+                <label>Project Name</label>
+                <input type="text" id="projName: "></textarea>
+                <label style="margin-left: 20;">Reposetory Name</label>
+                <input type="text" id="repoName: "></textarea>
+                <label style="font-size: small">
+                    in here you should write the project name of the git repo, and the git repo name. make shure the repo is initilayzed.
+                </label>
+            </div>
+        </div>
+        <div style="border:1px solid gray">
+            <label label style="font-size: large;color: blue;">Collection Scoped Controls :</label>
             <ul class="CollectionControlList" id="CollectionControlList"></ul>
+        </div>
+        <div style="border:1px solid gray">
+            <dvi>
+                <label style="font-size: large;color: blue;">Upload pickers values by CSV file</label>
+            </dvi>
+            <div id="csvFile">
+                <input type="file" id="uploadCsv" style="margin: 20;" title="load" />
+                <button id="uploadFile">Upload</button>
+                <label style="font-size: small;">(The file name should be as the control name.)</label>
+            </div>
+        </div>
+        <div style="border:1px solid gray">
+            <div>
+                <label style="font-size: large;color: blue;">Upload picker values Manualy from the CSV Content File</label>
+            </div>
+            <div>
+                <label>File full name:</label>
+                <input type="text" id="fileName" style="margin: 20;" title="File full name" />
+                <label style="font-size: small;">(Without the extenshion name)</label>
+            </div>
+            <div id="stringBox">
+                <label>CSV fie content:</label>
+                <label style="font-size: small;">(open it as text, and copy the content)</label>
+            </div>
+            <div>
+                <textarea id="uploadString" style="position: relative; left: 10px;" rows="20" cols="40" title="Csv File Content"></textarea>
+            </div>
+            <br/>
+            <div>
+                <button id="uploadContent" style="position: relative; left: 20px;">Generate</button>
+            </div>
         </div>
     </div>
 
@@ -126,7 +168,7 @@
         <p>Tokyo is the capital of Japan.</p>
     </div>
     <script>
-        function openCity(evt, cityName) {
+        function selectTab(evt, tabName) {
             let i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
@@ -136,7 +178,7 @@
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
-            document.getElementById(cityName).style.display = "block";
+            document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
     </script>

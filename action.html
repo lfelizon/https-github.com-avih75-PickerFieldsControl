@@ -14,7 +14,8 @@
         VSS.init({
             explicitNotifyLoaded: true,
             usePlatformScripts: true,
-            configureModuleLoader: true
+            configureModuleLoader: true,
+            applyTheme: true
         });
         VSS.require(["scripts/mapExcell"], function(data) {
             VSS.notifyLoadSucceeded();

@@ -1,36 +1,40 @@
-import { StoreValueList, FieldValues, GetValue, RetriveControlList, ControlsNames, StoreControlList } from "./StorageHelper";
+import { StoreValueList, FieldValues, GetValue, RetriveControlList, ControlsNames, StoreControlList, KillValueList, RepoInfo } from "./StorageHelper";
 import GitRestClient = require("TFS/VersionControl/GitRestClient");
 import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
-//import { Control } from "VSS/Controls";
+
 //ArrayBuffer = require('to-array-buffer');
 
 let provider = () => {
     return {
         execute: (actionContext) => {
-
         }
     };
 };
 function InitP() {
     $("#uploadCsv").change((e) => {
         FileSelected(e);
-    })
+    });
+    $("#uploadFile").click(() => FileUpload());
+    $("#uploadContent").click(() => TextUpload())
     VSS.resize();
     RetriveControlList().then((controlList) => {
-        let $ulList = $("#CollectionControlList");
         controlList.forEach(control => {
-            let $il = $("<li />");
-            if (control.projectName == "" || control.fileName == undefined) {
-                control.projectName = "Collection";
-            }
-            $il.text("scope : " + control.projectName + " control name : " + control.controlName + " file name : " + control.fileName);
-            $ulList.append($il);
+            AddNewItemList(control, controlList);
         });
     });
 }
+function DeleteControl($il: JQuery, control: ControlsNames, controlList: Array<ControlsNames>) {
+    $il.hide();
+    controlList.splice(controlList.indexOf(control), 1);
+    StoreControlList(controlList);
+    KillValueList(control.controlName);
+}
+function FileUpload() {
+    let input = $("#uploadCsv");
+}
 function FileSelected(e: JQueryEventObject) {
     let input = $("#uploadCsv");
-    GetValue("RepoInfo").then((infos: { repoProject: string, repoName: string }) => {
+    GetValue("RepoInfop").then((infos: RepoInfo) => {
         let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
         let fileName: string = input.prop('value').toLowerCase();
         if (regex.test(fileName)) {
@@ -42,7 +46,7 @@ function FileSelected(e: JQueryEventObject) {
                 if (reader.readAsBinaryString) {
                     reader.onload = function (e) {
                         let fileResult: string = e.target.result.toString();
-                        MapValues(controlName, fileResult, infos.repoProject, infos.repoName);
+                        MapValues(controlName, fileResult, infos);
                     };
                     reader.readAsBinaryString(input.prop('files')[0]);
                 } //else {
@@ -67,7 +71,7 @@ function FileSelected(e: JQueryEventObject) {
         }
     })
 }
-function MapValues(controlName: string, fileResult: string, projectName: string, repoName: string) {
+function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     let fieldsValuesList = {
         FieldsLists: new Array<Array<FieldValues>>()
     }
@@ -129,39 +133,52 @@ function MapValues(controlName: string, fileResult: string, projectName: string,
     fieldsValuesList.FieldsLists.push(level2List);
     fieldsValuesList.FieldsLists.push(level3List);
     fieldsValuesList.FieldsLists.push(level4List);
-    PushDoc(controlName, fieldsValuesList, fileResult, projectName, repoName);
+    PushDoc(controlName, fieldsValuesList, fileResult, infos);
 }
-function PushDoc(controlName: string, fieldsValuesList, fileResult: string, projectName: string, repoName: string) {
+function PushDoc(controlName: string, fieldsValuesList, fileResult: string, infos: RepoInfo) {
     StoreValueList(controlName, fieldsValuesList).then(() => {
         RetriveControlList().then((controlList) => {
             let flag = false;
             controlList.forEach(control => {
-                if (control.fileName == controlName) {
+                if (control.controlName == controlName) {
                     flag = true;
                 }
             });
             if (!flag) {
+                let scope: string = controlName.split("_")[0];
+                if (scope == controlName)
+                    scope = "Collection";
                 let control: ControlsNames = {
                     controlName: controlName,
-                    fileName: "controlName.csv",
-                    projectName: ""
+                    fileName: `${controlName}.csv`,
+                    projectName: scope
                 }
                 controlList.push(control);
-                let $ulList = $("#CollectionControlList");
-                let $il = $("<li />");
-                $il.text(`scope : ${control.projectName}, control name : ${control.controlName}, file name : ${control.fileName}`);
-                $ulList.append($il);
+                AddNewItemList(control, controlList);
+                StoreControlList(controlList);
+                alert(controlName + " Value list created.");
             }
-            StoreControlList(controlList);
-            controlList.push();
+            else {
+                alert(controlName + " Value list updated.");
+            }
         });
-        PushToGit(fileResult, controlName, projectName, repoName)
-        alert(controlName + " Value list updated.");
+        if (infos != undefined)
+            PushToGit(fileResult, controlName, infos);
     })
 }
-function PushToGit(refName: string, controlName: string, projectName: string, repostoryName: string) {
+function AddNewItemList(control: ControlsNames, controlList: ControlsNames[]) {
+    let $ulList = $("#CollectionControlList");
+    let $il = $("<li />");
+    $il.text(`scope : ${control.projectName}, control name : ${control.controlName}, file name : ${control.fileName}`);
+    let $button = $("<button />");
+    $button.text("X");
+    $button.click(() => DeleteControl($il, control, controlList));
+    $il.append($button);
+    $ulList.append($il);
+}
+function PushToGit(refName: string, controlName: string, infos: RepoInfo) {// projectName: string, repoName: string
     let git: GitRestClient.GitHttpClient4 = GitRestClient.getClient();
-    git.getRepository(repostoryName, projectName).then((repostory: GitRepository) => {
+    git.getRepository(infos.repoName, infos.repoProject).then((repostory: GitRepository) => {
         if (repostory != undefined) {
             let repostoryId = repostory.id;
             if (typeof (repostoryId) === "string") {
@@ -172,7 +189,7 @@ function PushToGit(refName: string, controlName: string, projectName: string, re
                         path: '/' + controlName + '.csv'
                     }
                 }];
-                pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName, 'Upload New File');  //project
+                pushCommit(git, gitChanges, repostoryId, infos.repoProject, repostory, controlName, 'Upload New File');  //project
                 git.getItem(repostoryId, controlName + ".csv").then((item) => {
                     let gitChanges: GitChange[] = [<GitChange>{
                         changeType: 2, // 1-add  2- edit
@@ -181,7 +198,7 @@ function PushToGit(refName: string, controlName: string, projectName: string, re
                             path: '/' + controlName + '.csv'
                         }
                     }];
-                    pushCommit(git, gitChanges, repostoryId, projectName, repostory, controlName, 'Upload Edited File'); //project
+                    pushCommit(git, gitChanges, repostoryId, infos.repoProject, repostory, controlName, 'Upload Edited File'); //project
                 });
 
             }
@@ -218,7 +235,29 @@ function pushCommit(git: GitRestClient.GitHttpClient4, gitChanges: GitChange[], 
         }
     })
 }
-
+function TextUpload() {
+    let $contentFile = $("#uploadString");
+    let $fileName = $("#fileName");
+    let errorMessage: string = ""
+    if ($fileName.val() == "" || !checkIfNameOk($fileName.val())) {
+        errorMessage += "No file name \n"
+    }
+    if ($contentFile.val()=="")
+    {
+        errorMessage += "No file Content \n"
+    }
+    if (errorMessage=="")
+    {
+        MapValues($fileName.val(), $contentFile.val(), undefined);
+    }
+    else
+    {
+        alert (errorMessage);
+    }
+}
+function checkIfNameOk(fileName: string) {
+    return true
+}
 VSS.register(VSS.getContribution().id, provider);
 InitP();
 
