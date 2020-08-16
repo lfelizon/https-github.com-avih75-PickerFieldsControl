@@ -172,6 +172,11 @@ function AddNewItemList(control: ControlsNames, controlList: ControlsNames[]) {
     $il.text(`scope : ${control.projectName}, control name : ${control.controlName}, file name : ${control.fileName}`);
     let $button = $("<button />");
     $button.text("X");
+    $button.css("font-size","small");
+    $button.css("padding-left","10px");
+    $button.css("margin-left","10px");
+    $button.css("width","10px");
+    $button.css("hight","10px");
     $button.click(() => DeleteControl($il, control, controlList));
     $il.append($button);
     $ulList.append($il);

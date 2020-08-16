@@ -30,10 +30,22 @@ save the file :
 
 # Upload the CSV file
 
-use the action menu added in the work item Form. (works only in chrome)
-"Upload Dependencies"
+Go to Collection setting, Multi picker. 
 
-![Layout Customization](img/D.png)
+![Layout Customization](img/D1.png)
+
+Select the Configuration pad
+
+![Layout Customization](img/D2.png)
+
+Two option to upload the file
+upload the file (works only in chrome), or upload manualy the file content.
+
+![Layout Customization](img/D3.png)
+
+you can see the control list you have uploaded its files, and remove it from there.
+
+![Layout Customization](img/D4.png)
 
 # Use your Controller
 
