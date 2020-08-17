@@ -172,11 +172,11 @@ function AddNewItemList(control: ControlsNames, controlList: ControlsNames[]) {
     $il.text(`scope : ${control.projectName}, control name : ${control.controlName}, file name : ${control.fileName}`);
     let $button = $("<button />");
     $button.text("X");
-    $button.css("font-size","small");
-    $button.css("padding-left","10px");
-    $button.css("margin-left","10px");
-    $button.css("width","10px");
-    $button.css("hight","10px");
+    $button.css("font-size", "small");
+    $button.css("padding-left", "10px");
+    $button.css("margin-left", "10px");
+    $button.css("width", "10px");
+    $button.css("hight", "10px");
     $button.click(() => DeleteControl($il, control, controlList));
     $il.append($button);
     $ulList.append($il);
@@ -247,18 +247,18 @@ function TextUpload() {
     if ($fileName.val() == "" || !checkIfNameOk($fileName.val())) {
         errorMessage += "No file name \n"
     }
-    if ($contentFile.val()=="")
-    {
+    if ($contentFile.val() == "") {
         errorMessage += "No file Content \n"
     }
-    if (errorMessage=="")
-    {
-        MapValues($fileName.val(), $contentFile.val(), undefined);
+    if (errorMessage != "") {
+        alert(errorMessage);
+
     }
-    else
-    {
-        alert (errorMessage);
-    }
+    else {
+        GetValue("RepoInfop").then((infos: RepoInfo) => {
+            MapValues($fileName.val(), $contentFile.val(), infos);
+        })
+   }
 }
 function checkIfNameOk(fileName: string) {
     return true
