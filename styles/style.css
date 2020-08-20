@@ -16,6 +16,7 @@
 
 .selectField {
     width: 100%;
+    color: inherit;
 }
 
 .wrap {
