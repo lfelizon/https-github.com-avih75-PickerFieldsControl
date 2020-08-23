@@ -1,6 +1,6 @@
-/* .container {
-    padding-left: 1px;
-} */
+.container {
+    float: left;
+}
 
 
 /* .buttons {
@@ -16,6 +16,11 @@
 
 .selectField {
     width: 100%;
+    color: inherit;
+}
+
+.selectedDiv {
+    float: left;
     color: inherit;
 }
 

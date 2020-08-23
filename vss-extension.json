@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Multi-Pickers-Fields-Control",
-    "version": "1.1.244",
+    "version": "1.1.253",
     "name": "Multi Pickers Fields Control",
     "scopes": [
         "vso.code_full",
@@ -83,7 +83,6 @@
             "properties": {
                 "name": "Multi Pickers Fields with dependencies",
                 "uri": "index.html",
-                "height": 200,
                 "inputs": [{
                         "id": "ControlName",
                         "name": "ControlName",
@@ -206,6 +205,16 @@
                         "id": "Reposetory",
                         "name": "Reposetory",
                         "description": "This field get the project name and the repository name, use for push the csv content to version control",
+                        "type": "TextArea",
+                        "validation": {
+                            "dataType": "String",
+                            "isRequired": false
+                        }
+                    },
+                    {
+                        "id": "ViewOption",
+                        "name": "ViewOption",
+                        "description": "This field get the Number of select in one line",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",

@@ -16,6 +16,7 @@ export class Controller {
     private _fieldName4: string = "";
     private _fieldValue4: string = "";
     private _reposetory: string = "";
+    private _viewOption: string = "";
     private _inputs: IDictionaryStringTo<string>;
     private _model: Model;
     constructor() {
@@ -34,6 +35,7 @@ export class Controller {
         this._fieldName4 = this._inputs["FieldName4"];
         this._fieldValue4 = this._inputs["Field4"];
         this._reposetory = this._inputs["Reposetory"];
+        this._viewOption = this._inputs["ViewOption"];
         WitService.WorkItemFormService.getService().then(
             (service) => {
                 Q.spread(
@@ -41,6 +43,7 @@ export class Controller {
                         service.getFieldValue(this._editeList),
                         this._controlName,
                         this._reposetory,
+                        this._viewOption,
                         this._fieldName1,
                         service.getFieldValue(this._fieldValue1),
                         this._fieldValue1,
@@ -54,14 +57,14 @@ export class Controller {
                         service.getFieldValue(this._fieldValue4),
                         this._fieldValue4
                     ],
-                    (editList: string, controlName: string, reposetory: string,
+                    (editList: string, controlName: string, reposetory: string, viewOption: string,
                         fieldName1: string, fieldValue1: string, fieldRefName1: string,
                         fieldName2: string, fieldValue2: string, fieldRefName2: string,
                         fieldName3: string, fieldValue3: string, fieldRefName3: string,
                         fieldName4: string, fieldValue4: string, fieldRefName4: string) => {
                         let projectName = VSS.getWebContext().project.name;
                         RetriveValueList(controlName, projectName).then((doc) => {
-                            this._model = new Model(controlName, editList, doc, reposetory,
+                            this._model = new Model(controlName, editList, doc, reposetory, viewOption,
                                 fieldName1, fieldValue1, fieldRefName1,
                                 fieldName2, fieldValue2, fieldRefName2,
                                 fieldName3, fieldValue3, fieldRefName3,

@@ -6,26 +6,31 @@ export class View {
     private pickerFieldModel: Model;
     constructor(private model: Model) {
         this.pickerFieldModel = model;
-        this.CreateView();
+        this.CreateView(+model.viewOption);
         if (this.pickerFieldModel.editList) {
             this.AddEditOpetions();
         }
     }
-    private CreateView() {
+    private CreateView(viewOption: number) {
         $(".container").remove();
-        var container = $("<div />");
-        container.addClass("container");
+        var container = $("<div />"); 
         let size = 36 * this.model.fieldValuesList.FieldsLists.length;
         VSS.resize(size, size);
         for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
+            let $divSelect: JQuery;
             if (this.model.fieldsValue[0] == "") {
-                container.append(this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
+                $divSelect = this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]);
             }
             else {
-                container.append(this.AddSelectFieldWithValues(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]));
+                $divSelect = this.AddSelectFieldWithValues(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]);
+                
             }
+            $divSelect.css("width", (100 / viewOption).toString() + "%");
+            $divSelect.addClass("selectedDiv"); 
+            container.append($divSelect);
         }
         $("body").append(container);
+        VSS.resize();
     }
     private AddSelectFieldWithValues(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues>) {
         let div = $("<div />");

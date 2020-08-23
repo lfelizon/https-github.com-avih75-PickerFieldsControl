@@ -1,5 +1,5 @@
 import { Controller } from "./PickerFieldsControl";
-import { IWorkItemLoadedArgs, IWorkItemFieldChangedArgs } from "TFS/WorkItemTracking/ExtensionContracts";
+import { IWorkItemLoadedArgs } from "TFS/WorkItemTracking/ExtensionContracts";
 import { WorkItemFormService } from "TFS/WorkItemTracking/Services";
 
 // save on ctr + s
@@ -18,7 +18,8 @@ var provider = () => {
     return {
         onLoaded: (workItemLoadedArgs: IWorkItemLoadedArgs) => {
             control = new Controller();
-        }, 
+
+        },
     };
 };
 
