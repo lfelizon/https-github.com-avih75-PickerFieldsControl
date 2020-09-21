@@ -13,9 +13,7 @@ export class View {
     }
     private CreateView(viewOption: number) {
         $(".container").remove();
-        var container = $("<div />"); 
-        let size = 36 * this.model.fieldValuesList.FieldsLists.length;
-        VSS.resize(size, size);
+        let container = $("<div />");
         for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
             let $divSelect: JQuery;
             if (this.model.fieldsValue[0] == "") {
@@ -23,10 +21,9 @@ export class View {
             }
             else {
                 $divSelect = this.AddSelectFieldWithValues(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]);
-                
             }
-            $divSelect.css("width", (100 / viewOption).toString() + "%");
-            $divSelect.addClass("selectedDiv"); 
+            $divSelect.css("width", (90 / viewOption).toString() + "%");
+            $divSelect.addClass("selectedDiv");
             container.append($divSelect);
         }
         $("body").append(container);
@@ -67,12 +64,13 @@ export class View {
         newSelect.val(fieldValue);
         div.append(label);
         div.append(newSelect);
+        div.addClass("divSelect")
         return div;
     }
     private AddSelectField(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues>) {
         let div = $("<div />");
         let newSelect = $("<select />");
-        let label = $("<textBox />");
+        let label = $("<label />");
         label.text(fieldName);
         label.addClass("label")
         newSelect.addClass("selectField");
@@ -82,10 +80,11 @@ export class View {
             values.forEach(value => {
                 newSelect.append(new Option(value.Value));
             });
-            newSelect.val('');
+            newSelect.val('');  // looks for delete
         }
         else {
             newSelect.attr("disabled", "true");
+            div.attr("disabled", "disabled"); // !
         }
         newSelect.val(fieldValue);
         div.append(label);
@@ -93,36 +92,57 @@ export class View {
         return div;
     }
     private OnSelectChange(fieldNumber: number, eventObject: JQueryEventObject = undefined) {
+
         for (let i = fieldNumber + 1; i < 5; i++) {
+            // reset the view of the select elemnts
             let select = $("#" + i)
             select.attr("disabled", "true");
+            select.parent().attr("disabled", "disabled"); // !
             select.find('option').remove().end();
             select.val('');
             this.model.fieldsValue[fieldNumber] = "";
         }
+
+        ///  
         let select: string = $("#" + fieldNumber).children("option:selected").val();
         this.model.fieldsValue[fieldNumber - 1] = select;
         this.updateWorkItem();
-        //}
-        if (fieldNumber < 4) {
-            if (fieldNumber > 1) {
-                let prevSelect: string = $("#" + (fieldNumber - 1)).children("option:selected").val();
-                this.model.fieldValuesList.FieldsLists[fieldNumber - 2].forEach(value => {
-                    if (value.Value == prevSelect) {
-                        select = value.Depend + prevSelect + select;
-                    }
-                });
-            }
-            let nextSelect = $("#" + (fieldNumber + 1))
-            nextSelect.find('option').remove().end();
-            this.model.fieldValuesList.FieldsLists[fieldNumber].forEach(value => {
-                if (value.Depend == select) {
-                    nextSelect.append(new Option(value.Value));
-                }
-            });
-            nextSelect.val('');
-            nextSelect.removeAttr("disabled");
+
+        let prevSelects: string = "";
+        let nextSelect = $("#" + (fieldNumber + 1))
+        //nextSelect.find('option').remove().end();
+        if (fieldNumber == 1) {
+            prevSelects = this.model.fieldsValue[0];
         }
+        else if (fieldNumber == 2 && (+this.model.fieldsQuantity) > 2) {
+            prevSelects = this.model.fieldsValue[0] + this.model.fieldsValue[1];
+        }
+        else if (fieldNumber == 3 && (+this.model.fieldsQuantity) > 3) {
+            prevSelects = this.model.fieldsValue[0] + this.model.fieldsValue[1] + this.model.fieldsValue[2];
+        }
+        else
+            return;
+        this.model.fieldValuesList.FieldsLists[fieldNumber].forEach(value => {
+            if (value.Depend == prevSelects) {
+                nextSelect.append(new Option(value.Value));
+            }
+        });
+
+        // if (fieldNumber > 1) {
+        //     let prevSelect: string = $("#" + (fieldNumber - 1)).children("option:selected").val();
+        //     this.model.fieldValuesList.FieldsLists[fieldNumber - 2].forEach(value => {
+        //         if (value.Value == prevSelect) {
+        //             select = value.Depend + prevSelect + select;
+        //         }
+        //     });
+        // }
+        nextSelect.val('');
+        nextSelect.removeAttr("disabled");
+        nextSelect.parent().removeAttr("disabled"); // !
+
+
+        ////
+
     }
     private updateWorkItem() {
         WitService.WorkItemFormService.getService().then(
@@ -206,3 +226,25 @@ export class View {
         $("body").append(editContainer);
     }
 }
+// let select: string = $("#" + fieldNumber).children("option:selected").val();
+// this.model.fieldsValue[fieldNumber - 1] = select;
+// this.updateWorkItem();
+// if (fieldNumber < 4) {
+//     if (fieldNumber > 1) {
+//         let prevSelect: string = $("#" + (fieldNumber - 1)).children("option:selected").val();
+//         this.model.fieldValuesList.FieldsLists[fieldNumber - 2].forEach(value => {
+//             if (value.Value == prevSelect) {
+//                 select = value.Depend + prevSelect + select;
+//             }
+//         });
+//     }
+//     let nextSelect = $("#" + (fieldNumber + 1))
+//     nextSelect.find('option').remove().end();
+//     this.model.fieldValuesList.FieldsLists[fieldNumber].forEach(value => {
+//         if (value.Depend == select) {
+//             nextSelect.append(new Option(value.Value));
+//         }
+//     });
+//     nextSelect.val('');
+//     nextSelect.removeAttr("disabled");
+//     nextSelect.parent().removeAttr("disabled"); // !

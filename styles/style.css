@@ -2,39 +2,56 @@
     float: left;
 }
 
-
-/* .buttons {
-    padding: 2px;
-    margin: 5px;
-    background-color: lightblue;
-    color: blue;
-} */
-
 .label {
     width: 100%;
+    font-size: 12px;
+    color: inherit;
+    margin-left: 5px;
+    opacity: 0.8;
+}
+
+.label:disabled {
+    opacity: 0.4;
 }
 
 .selectField {
     width: 100%;
     color: inherit;
+    font-size: 14px;
+    /* border-color: rgb(51, 51, 51); */
+    border-color: lightgray;
+    padding-bottom: 2px;
+}
+
+.selectField:focus {
+    border-width: 1px;
+    border-color: blue;
+}
+
+.selectField:hover:focus {
+    border-width: 1px;
+    border-color: blue;
+}
+
+.selectField:hover:enabled {
+    cursor: pointer;
+    border-color: rgb(51, 51, 51);
+    border-width: 1px;
+}
+
+.selectField:disabled {
+    border-width: 0px;
+    border-color: transparent;
 }
 
 .selectedDiv {
     float: left;
-    color: inherit;
+    margin-left: 10px;
 }
 
 .wrap {
     flex-grow: 1;
 }
-
-
-/* .container>.bowtie-icon {
-    font-size: 24px;
-    color: lightgray;
-    margin: 2px 2px 2px 2px;
-    cursor: pointer;
-} */
 
 .bowtie-icon.focus,
 .bowtie-icon:hover {
@@ -105,14 +122,3 @@ input[type="number"] {
     border: 1px solid #ccc;
     border-top: none;
 }
-
-
-/* .bigImages {
-    width: 500px;
-    height: 500px;
-}
-
-.images {
-    width: 150px;
-    height: 150px;
-} */

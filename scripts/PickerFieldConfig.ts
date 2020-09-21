@@ -79,9 +79,14 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     let level2List = new Array<FieldValues>();
     let level3List = new Array<FieldValues>();
     let level4List = new Array<FieldValues>();
+    let repetedValues = new Array<string>();
+    repetedValues.push(" Duplicated Line where in the file ");
     let rows: Array<string> = fileResult.split("\n");
     for (let index = 1; index < rows.length; index++) {
         const cells = rows[index].split(',');
+        cells.forEach(cell => {
+            cell = cell.trim();
+        });
         let check: boolean = false;
         if (cells[0] != "") {
             level1List.forEach(element => {
@@ -124,6 +129,9 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
                         if (!check) {
                             level4List.push({ Depend: cells[1] + cells[2] + cells[3], Value: cells[4] });
                         }
+                        else {
+                            repetedValues.push(cells[1] + " " + cells[2] + " " + cells[3] + " " + cells[4]);
+                        }
                     }
                 }
             }
@@ -133,6 +141,7 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     fieldsValuesList.FieldsLists.push(level2List);
     fieldsValuesList.FieldsLists.push(level3List);
     fieldsValuesList.FieldsLists.push(level4List);
+    alert(repetedValues.length + repetedValues.toString());
     PushDoc(controlName, fieldsValuesList, fileResult, infos);
 }
 function PushDoc(controlName: string, fieldsValuesList, fileResult: string, infos: RepoInfo) {
@@ -258,7 +267,7 @@ function TextUpload() {
         GetValue("RepoInfop").then((infos: RepoInfo) => {
             MapValues($fileName.val(), $contentFile.val(), infos);
         })
-   }
+    }
 }
 function checkIfNameOk(fileName: string) {
     return true
