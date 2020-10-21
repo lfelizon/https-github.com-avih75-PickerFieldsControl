@@ -10,6 +10,14 @@ let provider = () => {
         }
     };
 };
+function CleanCell(cell: string) {
+    let newCell: string = ""
+    for (let index = 0; index < cell.length; index++) {
+        if (cell.charCodeAt(index) != 13)
+            newCell += cell[index]
+    }
+    return newCell.trim();
+}
 function InitP() {
     $("#uploadCsv").change((e) => {
         FileSelected(e);
@@ -49,20 +57,7 @@ function FileSelected(e: JQueryEventObject) {
                         MapValues(controlName, fileResult, infos);
                     };
                     reader.readAsBinaryString(input.prop('files')[0]);
-                } //else {
-                //For IE Browser.
-                // reader.onload = function (e) {
-                //     let data = "";
-                //     alert('not chrom');
-                //     let c: ArrayBuffer = toArrayBuffer(e.target.result);
-                //     let bytes = new Uint8Array(c)
-                //     for (let i = 0; i < bytes.byteLength; i++) {
-                //         data += String.fromCharCode(bytes[i]);
-                //     }
-                //     MapValues(controlName, data, infos.repoProject, infos.repoName);
-                // };
-                // reader.readAsArrayBuffer(input.prop('files')[0]);
-                //}
+                }
             } else {
                 alert("This browser does not support HTML5.");
             }
@@ -85,7 +80,7 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     for (let index = 1; index < rows.length; index++) {
         const cells = rows[index].split(',');
         cells.forEach(cell => {
-            cell = cell.trim();
+            cell = CleanCell(cell);
         });
         let check: boolean = false;
         if (cells[0] != "") {

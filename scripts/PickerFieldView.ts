@@ -92,7 +92,6 @@ export class View {
         return div;
     }
     private OnSelectChange(fieldNumber: number, eventObject: JQueryEventObject = undefined) {
-
         for (let i = fieldNumber + 1; i < 5; i++) {
             // reset the view of the select elemnts
             let select = $("#" + i)
@@ -107,10 +106,8 @@ export class View {
         let select: string = $("#" + fieldNumber).children("option:selected").val();
         this.model.fieldsValue[fieldNumber - 1] = select;
         this.updateWorkItem();
-
         let prevSelects: string = "";
-        let nextSelect = $("#" + (fieldNumber + 1))
-        //nextSelect.find('option').remove().end();
+        let nextSelect = $("#" + (fieldNumber + 1)) 
         if (fieldNumber == 1) {
             prevSelects = this.model.fieldsValue[0];
         }
@@ -126,21 +123,10 @@ export class View {
             if (value.Depend == prevSelects) {
                 nextSelect.append(new Option(value.Value));
             }
-        });
-
-        // if (fieldNumber > 1) {
-        //     let prevSelect: string = $("#" + (fieldNumber - 1)).children("option:selected").val();
-        //     this.model.fieldValuesList.FieldsLists[fieldNumber - 2].forEach(value => {
-        //         if (value.Value == prevSelect) {
-        //             select = value.Depend + prevSelect + select;
-        //         }
-        //     });
-        // }
+        }); 
         nextSelect.val('');
         nextSelect.removeAttr("disabled");
         nextSelect.parent().removeAttr("disabled"); // !
-
-
         ////
 
     }

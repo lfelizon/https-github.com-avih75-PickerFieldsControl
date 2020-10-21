@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Multi-Pickers-Fields-Control",
-    "version": "1.1.300",
+    "version": "1.1.301",
     "name": "Multi Pickers Fields Control",
     "scopes": [
         "vso.code_full",
@@ -34,6 +34,12 @@
     "content": {
         "details": {
             "path": "details.md"
+        },
+        "license": {
+            "path": "LICENSE.md"
+        },
+        "privacy": {
+            "path": "PRIVACY.md"
         }
     },
     "repository": {
@@ -41,8 +47,23 @@
         "uri": "https://github.com/avih75/PickerFieldsControl"
     },
     "links": {
+        "support": {
+            "uri": "https://github.com/avih75/PickerFieldsControl/issues"
+        },
+        "license": {
+            "uri": "https://github.com/avih75/PickerFieldsControl/blob/master/LICENSE.md"
+        },
+        "privacypolicy": {
+            "uri": "https://github.com/avih75/PickerFieldsControl/blob/master/PRIVACY.md"
+        },
+        "learn": {
+            "uri": "https://github.com/avih75/PickerFieldsControl/blob/master/README.md"
+        },
         "repository": {
             "uri": "https://github.com/avih75/PickerFieldsControl"
+        },
+        "issues": {
+            "uri": "https://github.com/avih75/PickerFieldsControl/issues"
         }
     },
     "files": [{
