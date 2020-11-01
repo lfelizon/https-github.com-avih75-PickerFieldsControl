@@ -2,8 +2,6 @@ import { StoreValueList, FieldValues, GetValue, RetriveControlList, ControlsName
 import GitRestClient = require("TFS/VersionControl/GitRestClient");
 import { GitCommitRef, GitChange, ItemContent, GitItem, GitRefUpdate, GitPush, GitRepository, GitRef } from "TFS/VersionControl/Contracts";
 
-//ArrayBuffer = require('to-array-buffer');
-
 let provider = () => {
     return {
         execute: (actionContext) => {

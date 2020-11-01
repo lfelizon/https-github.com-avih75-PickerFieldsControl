@@ -96,18 +96,16 @@ export class View {
             // reset the view of the select elemnts
             let select = $("#" + i)
             select.attr("disabled", "true");
-            select.parent().attr("disabled", "disabled"); // !
+            select.parent().attr("disabled", "disabled");
             select.find('option').remove().end();
             select.val('');
             this.model.fieldsValue[fieldNumber] = "";
         }
-
-        ///  
         let select: string = $("#" + fieldNumber).children("option:selected").val();
         this.model.fieldsValue[fieldNumber - 1] = select;
         this.updateWorkItem();
         let prevSelects: string = "";
-        let nextSelect = $("#" + (fieldNumber + 1)) 
+        let nextSelect = $("#" + (fieldNumber + 1))
         if (fieldNumber == 1) {
             prevSelects = this.model.fieldsValue[0];
         }
@@ -123,25 +121,32 @@ export class View {
             if (value.Depend == prevSelects) {
                 nextSelect.append(new Option(value.Value));
             }
-        }); 
+        });
         nextSelect.val('');
         nextSelect.removeAttr("disabled");
-        nextSelect.parent().removeAttr("disabled"); // !
-        ////
-
+        nextSelect.parent().removeAttr("disabled");
     }
     private updateWorkItem() {
+        let pathValue: string = this.model.fieldsValue[0] + '\\' + this.model.fieldsValue[1];
         WitService.WorkItemFormService.getService().then(
             (service) => {
                 service.setFieldValue(this.model.fieldsRefName[0], this.model.fieldsValue[0]).then(() => {
                     service.setFieldValue(this.model.fieldsRefName[1], this.model.fieldsValue[1]).then(() => {
                         if (+this.model.fieldsQuantity > 2) {
+                            pathValue += '\\' + this.model.fieldsValue[2];
                             service.setFieldValue(this.model.fieldsRefName[2], this.model.fieldsValue[2]).then(() => {
                                 if (+this.model.fieldsQuantity > 3) {
+                                    pathValue += '\\' + this.model.fieldsValue[3];
                                     service.setFieldValue(this.model.fieldsRefName[3], this.model.fieldsValue[3]);
+                                    if (this.model.summarizeToPathRefName != undefined && this.model.summarizeToPathRefName != "")
+                                        service.setFieldValue(this.model.summarizeToPathRefName, pathValue);
                                 }
+                                if (this.model.summarizeToPathRefName != undefined && this.model.summarizeToPathRefName != "")
+                                    service.setFieldValue(this.model.summarizeToPathRefName, pathValue);
                             })
                         }
+                        if (this.model.summarizeToPathRefName != undefined && this.model.summarizeToPathRefName != "")
+                            service.setFieldValue(this.model.summarizeToPathRefName, pathValue);
                     })
                 });
             }
@@ -211,26 +216,4 @@ export class View {
         }
         $("body").append(editContainer);
     }
-}
-// let select: string = $("#" + fieldNumber).children("option:selected").val();
-// this.model.fieldsValue[fieldNumber - 1] = select;
-// this.updateWorkItem();
-// if (fieldNumber < 4) {
-//     if (fieldNumber > 1) {
-//         let prevSelect: string = $("#" + (fieldNumber - 1)).children("option:selected").val();
-//         this.model.fieldValuesList.FieldsLists[fieldNumber - 2].forEach(value => {
-//             if (value.Value == prevSelect) {
-//                 select = value.Depend + prevSelect + select;
-//             }
-//         });
-//     }
-//     let nextSelect = $("#" + (fieldNumber + 1))
-//     nextSelect.find('option').remove().end();
-//     this.model.fieldValuesList.FieldsLists[fieldNumber].forEach(value => {
-//         if (value.Depend == select) {
-//             nextSelect.append(new Option(value.Value));
-//         }
-//     });
-//     nextSelect.val('');
-//     nextSelect.removeAttr("disabled");
-//     nextSelect.parent().removeAttr("disabled"); // !
+} 
