@@ -5,7 +5,9 @@ This extension is built for a specific additional need, and its to upload the de
 In this extension, i use the stack service of the Azure DevOps (TFS);
 
 # updates :
-* last update, i added path field, that  contain the all values cacade with \ - for queries mostly
+   * update 1.1.308, i added path field, that  contain the all values cacade with \ - for queries mostly
+   * ipdate 1.1.315, i added Behaviour parameter - to give it more oprtion
+    - Auto : fill automaticly if there is only one option
 
 # Deffine the extension in Azure DevOps
 
@@ -20,7 +22,8 @@ FieldName (3,4) and Field (3,4) are optional (if you want to cascade more the 2 
 
 ![Layout Customization](img/A.png) 
 
-# Create CSV File
+# Handle the Csv file
+## Create CSV File
 
 Create Your CSV file, you can put thousend of values
 pay attenshion to write the values correctly, avoid adding spaces in the end of the value (will create new value, its a string)
@@ -31,7 +34,7 @@ save the file :
 
 ![Layout Customization](img/C.png)
 
-# Upload the CSV file
+## Upload the CSV file
 
 Go to Collection setting, Multi picker. 
 

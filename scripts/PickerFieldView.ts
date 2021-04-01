@@ -129,8 +129,8 @@ export class View {
         test.forEach(element => {
             nextSelect.append(new Option(element));
         });
-        if (test.length == 1 && this.pickerFieldModel.privateBehaviure == "HP") {
-            nextSelect.val(test[0]);
+        if (test.length == 1 && this.pickerFieldModel.privateBehaviure == "Auto") {
+            nextSelect.val(test[0].toString());
             nextSelect.change();
         }
         else
