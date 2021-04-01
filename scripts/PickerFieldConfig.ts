@@ -267,7 +267,3 @@ function checkIfNameOk(fileName: string) {
 }
 VSS.register(VSS.getContribution().id, provider);
 InitP();
-
-// get the uploaded list
-// show it
-// on load new... add it to the list and add to view

@@ -1,15 +1,16 @@
-import * as WitService from "TFS/WorkItemTracking/Services";
+import { WorkItemFormService } from "TFS/WorkItemTracking/Services";
 import { Model } from "./PickerFieldModel";
 import { FieldValues, FieldsValuesList, StoreValueList } from "./StorageHelper";
-
 export class View {
     private pickerFieldModel: Model;
     constructor(private model: Model) {
         this.pickerFieldModel = model;
         this.CreateView(+model.viewOption);
-        if (this.pickerFieldModel.editList) {
-            this.AddEditOpetions();
-        }
+        WorkItemFormService.getService().then(
+            (service) => {
+                if (model.summarizeToPathRefName != undefined && model.summarizeToPathRefName != "")
+                    service.setFieldValue(model.summarizeToPathRefName, model.summarizeToPath);
+            });
     }
     private CreateView(viewOption: number) {
         $(".container").remove();
@@ -115,28 +116,41 @@ export class View {
         else if (fieldNumber == 3 && (+this.model.fieldsQuantity) > 3) {
             prevSelects = this.model.fieldsValue[0] + this.model.fieldsValue[1] + this.model.fieldsValue[2];
         }
-        else
+        else {
             return;
+        }
+        let test: Array<string> = new Array<string>();
         this.model.fieldValuesList.FieldsLists[fieldNumber].forEach(value => {
             if (value.Depend == prevSelects) {
-                nextSelect.append(new Option(value.Value));
+                test.push(value.Value);
             }
         });
-        nextSelect.val('');
+        test.sort();
+        test.forEach(element => {
+            nextSelect.append(new Option(element));
+        });
+        if (test.length == 1 && this.pickerFieldModel.privateBehaviure == "HP") {
+            nextSelect.val(test[0]);
+            nextSelect.change();
+        }
+        else
+            nextSelect.val('');
         nextSelect.removeAttr("disabled");
         nextSelect.parent().removeAttr("disabled");
     }
     private updateWorkItem() {
         let pathValue: string = this.model.fieldsValue[0] + '\\' + this.model.fieldsValue[1];
-        WitService.WorkItemFormService.getService().then(
+        WorkItemFormService.getService().then(
             (service) => {
                 service.setFieldValue(this.model.fieldsRefName[0], this.model.fieldsValue[0]).then(() => {
                     service.setFieldValue(this.model.fieldsRefName[1], this.model.fieldsValue[1]).then(() => {
                         if (+this.model.fieldsQuantity > 2) {
-                            pathValue += '\\' + this.model.fieldsValue[2];
+                            if (this.model.fieldsValue[2] != "")
+                                pathValue += '\\' + this.model.fieldsValue[2];
                             service.setFieldValue(this.model.fieldsRefName[2], this.model.fieldsValue[2]).then(() => {
                                 if (+this.model.fieldsQuantity > 3) {
-                                    pathValue += '\\' + this.model.fieldsValue[3];
+                                    if (this.model.fieldsValue[3] != "")
+                                        pathValue += '\\' + this.model.fieldsValue[3];
                                     service.setFieldValue(this.model.fieldsRefName[3], this.model.fieldsValue[3]);
                                     if (this.model.summarizeToPathRefName != undefined && this.model.summarizeToPathRefName != "")
                                         service.setFieldValue(this.model.summarizeToPathRefName, pathValue);
@@ -195,25 +209,4 @@ export class View {
         //     let x = doc2
         // });
     }
-    public AddEditOpetions() {
-        var editContainer = $("<div />");
-        var editListButton = $("<Button />");  // opens new window to show tables list.... add remove values
-        var createNewListsButton = $("<Button />");   // create empty lists
-        var delteListsButton = $("<Button />");    // delete all values
-        editContainer.text("Edit Lists");
-        createNewListsButton.text("Creat New List");
-        delteListsButton.text("Delete lists");
-        editContainer.append(editListButton);
-        editContainer.append(createNewListsButton);
-        editContainer.append(delteListsButton);
-        if (this.model.fieldValuesList.FieldsLists[0] == undefined ||
-            this.model.fieldValuesList.FieldsLists[0][0] == undefined ||
-            this.model.fieldValuesList.FieldsLists[0].length == 0) {
-            // create view of no lists => just create new list ....
-        }
-        else {
-            // create view of edit list => delete , edit....
-        }
-        $("body").append(editContainer);
-    }
-} 
+}

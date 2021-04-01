@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Multi-Pickers-Fields-Control",
-    "version": "1.1.302",
+    "version": "1.1.314",
     "name": "Multi Pickers Fields Control",
     "scopes": [
         "vso.code_full",
@@ -29,7 +29,8 @@
         "Multi Pickers",
         "Multi List Values",
         "Storage",
-        "List"
+        "List",
+        "Cascading"
     ],
     "content": {
         "details": {
@@ -106,8 +107,8 @@
                 "uri": "index.html",
                 "inputs": [{
                         "id": "ControlName",
-                        "name": "ControlName",
-                        "description": "This field get the controll name, use for label and getting the infos from storage",
+                        "name": "Control Name",
+                        "description": "This field get the controll name, use for label and getting the infos from storage, as the csv file name",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
@@ -116,7 +117,7 @@
                     },
                     {
                         "id": "FieldName1",
-                        "name": "FieldName1",
+                        "name": "Field Name 1",
                         "description": "The first field name",
                         "type": "TextArea",
                         "validation": {
@@ -126,7 +127,7 @@
                     },
                     {
                         "id": "Field1",
-                        "name": "Field1",
+                        "name": "Field vale 1",
                         "description": "The first field workItem Field",
                         "type": "WorkItemField",
                         "properties": {
@@ -143,7 +144,7 @@
                     },
                     {
                         "id": "FieldName2",
-                        "name": "FieldName2",
+                        "name": "Field Name 2",
                         "description": "The second field name",
                         "type": "TextArea",
                         "validation": {
@@ -153,7 +154,7 @@
                     },
                     {
                         "id": "Field2",
-                        "name": "Field2",
+                        "name": "Field value 2",
                         "description": "The second field workItem Field",
                         "type": "WorkItemField",
                         "properties": {
@@ -170,7 +171,7 @@
                     },
                     {
                         "id": "FieldName3",
-                        "name": "FieldName3",
+                        "name": "Field Name 3",
                         "description": "The therd field name",
                         "type": "TextArea",
                         "validation": {
@@ -180,7 +181,7 @@
                     },
                     {
                         "id": "Field3",
-                        "name": "Field3",
+                        "name": "Field value 3",
                         "description": "The therd field workItem Field",
                         "type": "WorkItemField",
                         "properties": {
@@ -197,7 +198,7 @@
                     },
                     {
                         "id": "FieldName4",
-                        "name": "FieldName4",
+                        "name": "Field Name 4",
                         "description": "The forth field name",
                         "type": "TextArea",
                         "validation": {
@@ -207,7 +208,7 @@
                     },
                     {
                         "id": "Field4",
-                        "name": "Field4",
+                        "name": "Field value 4",
                         "description": "The forth field workItem Field",
                         "type": "WorkItemField",
                         "properties": {
@@ -224,8 +225,8 @@
                     },
                     {
                         "id": "SummarizeToPath",
-                        "name": "SummarizeToPath",
-                        "description": "The forth fields toggether as path",
+                        "name": "Summarize to a Path view",
+                        "description": "The forth fields toggether as path nice to use for querys and sorts",
                         "type": "WorkItemField",
                         "properties": {
                             "workItemFieldTypes": [
@@ -241,8 +242,8 @@
                     },
                     {
                         "id": "Reposetory",
-                        "name": "Reposetory",
-                        "description": "This field get the project name and the repository name, use for push the csv content to version control",
+                        "name": "Backup Reposetory",
+                        "description": "This field get the project name and the repository name, use only for push the csv content to version control as backup",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
@@ -251,8 +252,18 @@
                     },
                     {
                         "id": "ViewOption",
-                        "name": "ViewOption",
-                        "description": "This field get the Number of select in one line",
+                        "name": "View Option",
+                        "description": "This field get the Number of combox shows in one line",
+                        "type": "TextArea",
+                        "validation": {
+                            "dataType": "String",
+                            "isRequired": false
+                        }
+                    },
+                    {
+                        "id": "PrivateBehaviure",
+                        "name": "Private Behaviore",
+                        "description": "This field get string of special behavior",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",

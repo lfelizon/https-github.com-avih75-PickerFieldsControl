@@ -4,6 +4,9 @@ Also, when we work in cloud, the use of the global list its not avaliable.
 This extension is built for a specific additional need, and its to upload the dependent lists by a simple CSV file. So they can be easily be managed.the control can push to git the csv file every time you upload it.
 In this extension, i use the stack service of the Azure DevOps (TFS);
 
+# updates :
+* last update, i added path field, that  contain the all values cacade with \ - for queries mostly
+
 # Deffine the extension in Azure DevOps
 
 There is ten Inputs parameters, four of them are optional.

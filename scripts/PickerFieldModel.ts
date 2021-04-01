@@ -1,6 +1,5 @@
 import { FieldValues, FieldsValuesList, SetValue } from "./StorageHelper";
-export class Model {
-    public editList: boolean = false;
+export class Model { 
     public fieldValuesList: FieldsValuesList;
     public fieldsQuantity: string;
     public controlName: string;
@@ -8,26 +7,25 @@ export class Model {
     public fieldsValue: Array<string>;
     public fieldsRefName: Array<string>;
     public summarizeToPath: string;
+    public summarizeToPathValue: string;
     public summarizeToPathRefName: string;
     public projectRepo: string;
     public repoName: string;
     public viewOption: string;
-
-    constructor(controlName: string, editList: string, ValuesList: FieldsValuesList, reposetory: string, viewOption: string,
+    public privateBehaviure: string;
+    constructor(controlName: string, ValuesList: FieldsValuesList, reposetory: string, viewOption: string,
         fieldName1: string, fieldValue1: string, fieldRefName1: string,
         fieldName2: string, fieldValue2: string, fieldRefName2: string,
         fieldName3: string, fieldValue3: string, fieldRefName3: string,
         fieldName4: string, fieldValue4: string, fieldRefName4: string,
-        summarizeToPath: string, summarizeToPathRefName: string) {
+        summarizeToPath: string, summarizeToPathRefName: string, privateBehaviure: string) {
+        this.privateBehaviure = privateBehaviure
         this.summarizeToPathRefName = summarizeToPathRefName;
         this.summarizeToPath = summarizeToPath;
         if (viewOption != undefined)
             this.viewOption = viewOption;
         else
-            this.viewOption = "1"
-        if (editList == "true") {
-            this.editList = true;
-        }
+            this.viewOption = "1";
         this.controlName = controlName;
         this.fieldValuesList = {
             FieldsLists: new Array<Array<FieldValues>>()
@@ -46,13 +44,18 @@ export class Model {
         this.fieldsName.push(fieldName2);
         this.fieldsValue.push(fieldValue2);
         this.fieldsRefName.push(fieldRefName2);
+        this.summarizeToPath = fieldValue1 + '\\' + fieldValue2;
         this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[1]);
         if (fieldName3 != null && fieldName3 != undefined && fieldValue3 != null && fieldValue3 != undefined) {
+            if (fieldValue3 != "")
+                this.summarizeToPath += '\\' + fieldValue3;
             this.fieldsName.push(fieldName3);
             this.fieldsValue.push(fieldValue3);
             this.fieldsRefName.push(fieldRefName3);
             this.fieldValuesList.FieldsLists.push(ValuesList.FieldsLists[2]);
             if (fieldName4 != null && fieldName4 != undefined && fieldValue4 != null && fieldValue4 != undefined) {
+                if (fieldValue4 != "")
+                    this.summarizeToPath += '\\' + fieldValue4;
                 this.fieldsName.push(fieldName4);
                 this.fieldsValue.push(fieldValue4);
                 this.fieldsRefName.push(fieldRefName4);

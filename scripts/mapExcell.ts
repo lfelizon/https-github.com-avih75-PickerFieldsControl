@@ -60,6 +60,7 @@ function MapValues(controlName: string, fileResult: string, projectName: string,
     let level4List = new Array<FieldValues>();
     let rows: Array<string> = fileResult.split("\n");
     for (let index = 1; index < rows.length; index++) {
+        rows[index] = CheckChars(rows[index]);
         const cells = rows[index].split(',');
         let check: boolean = false;
         if (cells[0] != "") {
@@ -181,6 +182,23 @@ function pushCommit(git: GitRestClient.GitHttpClient4, gitChanges: GitChange[], 
             });
         }
     })
+}
+function CheckChars(word: string) {
+    let newValue = "";
+    let arry: Array<string> = new Array<string>();
+    let counter = word.length;
+    if (word[word.length - 1] == " ")
+        counter--;
+    // this scoop just for remove charac get a bad char or value
+    for (let index = 0; index < counter; index++) {         
+        let x = word.charCodeAt(index);
+        arry.push("the letter: " + word[index] + " ascii: " + x);
+        if (word[index] == ";")
+            word[index]==",";
+        if (x != 13)
+            newValue += word[index];
+    }
+    return newValue;
 }
 $("#uploadCsv").change((e) => {
     CheckPermission();
