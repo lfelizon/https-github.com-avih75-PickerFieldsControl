@@ -13,7 +13,7 @@ function CleanCell(cell: string) {
     for (let index = 0; index < cell.length; index++) {
         if (cell.charCodeAt(index) != 13)
             newCell += cell[index]
-    }
+    }    
     return newCell.trim();
 }
 function InitP() {
@@ -73,7 +73,7 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     let level3List = new Array<FieldValues>();
     let level4List = new Array<FieldValues>();
     let repetedValues = new Array<string>();
-    repetedValues.push(" Duplicated Line where in the file ");
+    repetedValues.push(" Duplicated Line where founded in the file ");
     let rows: Array<string> = fileResult.split("\n");
     for (let index = 1; index < rows.length; index++) {
         const cells = rows[index].split(',');
@@ -134,7 +134,10 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     fieldsValuesList.FieldsLists.push(level2List);
     fieldsValuesList.FieldsLists.push(level3List);
     fieldsValuesList.FieldsLists.push(level4List);
-    alert(repetedValues.length + repetedValues.toString());
+    if (repetedValues.length > 1)
+        alert(repetedValues.length - 1 + repetedValues.toString());
+    else
+        alert("No duplicated Line where found in the file");
     PushDoc(controlName, fieldsValuesList, fileResult, infos);
 }
 function PushDoc(controlName: string, fieldsValuesList, fileResult: string, infos: RepoInfo) {
