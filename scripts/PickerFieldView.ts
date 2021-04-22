@@ -15,7 +15,8 @@ export class View {
     private CreateView(viewOption: number) {
         $(".container").remove();
         let container = $("<div />");
-        for (let index = 0; index < this.model.fieldValuesList.FieldsLists.length; index++) {
+        let index = 0
+        for (; index < this.model.fieldValuesList.FieldsLists.length; index++) {
             let $divSelect: JQuery;
             if (this.model.fieldsValue[0] == "") {
                 $divSelect = this.AddSelectField(this.pickerFieldModel.fieldsName[index], this.pickerFieldModel.fieldsValue[index], index + 1, this.model.fieldValuesList.FieldsLists[index]);
@@ -28,6 +29,8 @@ export class View {
             container.append($divSelect);
         }
         $("body").append(container);
+        if (this.pickerFieldModel.privateBehaviure == "Auto")
+            this.CheckIfOnlyOne(index);
         VSS.resize();
     }
     private AddSelectFieldWithValues(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues>) {
@@ -38,7 +41,7 @@ export class View {
         let newSelect = $("<select />");
         newSelect.addClass("selectField");
         newSelect.attr("id", fieldNumber);
-        newSelect.change((eventObject: JQueryEventObject) => this.OnSelectChange(fieldNumber, eventObject))
+        newSelect.change((eventObject: JQueryEventObject) => this.OnSelectChange(fieldNumber, eventObject));
         if (fieldNumber == 1) {
             values.forEach(value => {
                 newSelect.append(new Option(value.Value));
@@ -46,20 +49,23 @@ export class View {
         }
         else if (fieldNumber == 2) {
             values.forEach(value => {
-                if (value.Depend == this.model.fieldsValue[0])
+                if (value.Depend == this.model.fieldsValue[0]) {
                     newSelect.append(new Option(value.Value));
+                }
             });
         }
         else if (fieldNumber == 3) {
             values.forEach(value => {
-                if (value.Depend == this.model.fieldsValue[0] + this.model.fieldsValue[1])
+                if (value.Depend == this.model.fieldsValue[0] + this.model.fieldsValue[1]) {
                     newSelect.append(new Option(value.Value));
+                }
             });
         }
         else {
             values.forEach(value => {
-                if (value.Depend == this.model.fieldsValue[0] + this.model.fieldsValue[1] + this.model.fieldsValue[2])
+                if (value.Depend == this.model.fieldsValue[0] + this.model.fieldsValue[1] + this.model.fieldsValue[2]) {
                     newSelect.append(new Option(value.Value));
+                }
             });
         }
         newSelect.val(fieldValue);
@@ -67,6 +73,18 @@ export class View {
         div.append(newSelect);
         div.addClass("divSelect")
         return div;
+    }
+    private CheckIfOnlyOne(index: number) {
+        for (let i = 0; i < index; i++) {
+            let checkSelect = $("#" + (i + 1));
+            if ($("#" + (i + 1) + " option:selected").text() == "") {
+                let counter = checkSelect.find('option').length; 
+                if (counter == 1) {
+                    checkSelect.val($("#" + (i + 1) + " option:first").val());
+                    this.OnSelectChange(i+1);
+                }
+            }
+        }
     }
     private AddSelectField(fieldName: string, fieldValue: string, fieldNumber: number, values: Array<FieldValues>) {
         let div = $("<div />");
