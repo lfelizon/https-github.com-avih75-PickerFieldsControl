@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "Multi-Pickers-Fields-Control",
-    "version": "1.1.327",
+    "version": "1.1.332",
     "name": "Multi Pickers Fields Control",
     "scopes": [
         "vso.code_full",
@@ -141,6 +141,14 @@
                             "dataType": "String",
                             "isRequired": true
                         }
+                    }, {
+                        "id": "Field1Hide",
+                        "name": "Field 1 Hide",
+                        "description": "Hide on and off the first select hide",
+                        "inputMode": "CheckBox",
+                        "validation": {
+                            "dataType": "Boolean"
+                        }
                     },
                     {
                         "id": "FieldName2",
@@ -167,6 +175,14 @@
                         "validation": {
                             "dataType": "String",
                             "isRequired": true
+                        }
+                    }, {
+                        "id": "Field2Hide",
+                        "name": "Field 2 Hide",
+                        "description": "Hide on and off the second select hide",
+                        "inputMode": "CheckBox",
+                        "validation": {
+                            "dataType": "Boolean"
                         }
                     },
                     {
@@ -195,6 +211,14 @@
                             "dataType": "String",
                             "isRequired": false
                         }
+                    }, {
+                        "id": "Field3Hide",
+                        "name": "Field 3 Hide",
+                        "description": "Hide on and off the therd select hide",
+                        "inputMode": "CheckBox",
+                        "validation": {
+                            "dataType": "Boolean"
+                        }
                     },
                     {
                         "id": "FieldName4",
@@ -221,6 +245,14 @@
                         "validation": {
                             "dataType": "String",
                             "isRequired": false
+                        }
+                    }, {
+                        "id": "Field4Hide",
+                        "name": "Field 4 Hide",
+                        "description": "Hide on and off the fourth select hide",
+                        "inputMode": "CheckBox",
+                        "validation": {
+                            "dataType": "Boolean"
                         }
                     },
                     {
@@ -253,7 +285,7 @@
                     {
                         "id": "ViewOption",
                         "name": "View Option",
-                        "description": "This field get the Number of combox shows in one line",
+                        "description": "This field get the Number of combox shows in one line 1-4",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",

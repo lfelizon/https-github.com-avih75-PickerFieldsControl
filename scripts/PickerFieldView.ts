@@ -27,6 +27,8 @@ export class View {
             $divSelect.css("width", (90 / viewOption).toString() + "%");
             $divSelect.addClass("selectedDiv");
             container.append($divSelect);
+            if (this.pickerFieldModel.fieldsHide[index])
+                $divSelect.hide();
         }
         $("body").append(container);
         if (this.pickerFieldModel.privateBehaviure == "Auto")
@@ -78,10 +80,11 @@ export class View {
         for (let i = 0; i < index; i++) {
             let checkSelect = $("#" + (i + 1));
             if ($("#" + (i + 1) + " option:selected").text() == "") {
-                let counter = checkSelect.find('option').length; 
+                let counter = checkSelect.find('option').length;
                 if (counter == 1) {
                     checkSelect.val($("#" + (i + 1) + " option:first").val());
-                    this.OnSelectChange(i+1);
+                    checkSelect.attr("disabled", "disabled"); // !
+                    this.OnSelectChange(i + 1);
                 }
             }
         }

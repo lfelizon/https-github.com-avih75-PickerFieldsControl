@@ -1,11 +1,12 @@
 import { FieldValues, FieldsValuesList, SetValue } from "./StorageHelper";
-export class Model { 
+export class Model {
     public fieldValuesList: FieldsValuesList;
     public fieldsQuantity: string;
     public controlName: string;
     public fieldsName: Array<string>;
     public fieldsValue: Array<string>;
     public fieldsRefName: Array<string>;
+    public fieldsHide: Array<boolean>;
     public summarizeToPath: string;
     public summarizeToPathValue: string;
     public summarizeToPathRefName: string;
@@ -14,10 +15,10 @@ export class Model {
     public viewOption: string;
     public privateBehaviure: string;
     constructor(controlName: string, ValuesList: FieldsValuesList, reposetory: string, viewOption: string,
-        fieldName1: string, fieldValue1: string, fieldRefName1: string,
-        fieldName2: string, fieldValue2: string, fieldRefName2: string,
-        fieldName3: string, fieldValue3: string, fieldRefName3: string,
-        fieldName4: string, fieldValue4: string, fieldRefName4: string,
+        fieldName1: string, fieldValue1: string, fieldRefName1: string, fieldHide1,
+        fieldName2: string, fieldValue2: string, fieldRefName2: string, fieldHide2,
+        fieldName3: string, fieldValue3: string, fieldRefName3: string, fieldHide3,
+        fieldName4: string, fieldValue4: string, fieldRefName4: string, fieldHide4,
         summarizeToPath: string, summarizeToPathRefName: string, privateBehaviure: string) {
         this.privateBehaviure = privateBehaviure
         this.summarizeToPathRefName = summarizeToPathRefName;
@@ -37,6 +38,11 @@ export class Model {
         this.fieldsName = new Array<string>();
         this.fieldsValue = new Array<string>();
         this.fieldsRefName = new Array<string>();
+        this.fieldsHide = new Array<boolean>();
+        this.fieldsHide.push((fieldHide1) == true);
+        this.fieldsHide.push((fieldHide2) == true);
+        this.fieldsHide.push((fieldHide3) == true);
+        this.fieldsHide.push((fieldHide4) == true);
         this.fieldsName.push(fieldName1);
         this.fieldsValue.push(fieldValue1);
         this.fieldsRefName.push(fieldRefName1);

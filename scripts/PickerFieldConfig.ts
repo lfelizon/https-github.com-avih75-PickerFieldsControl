@@ -54,7 +54,7 @@ function FileSelected(e: JQueryEventObject) {
                         let fileResult: string = e.target.result.toString();
                         MapValues(controlName, fileResult, infos);
                     };
-                    reader.readAsBinaryString(input.prop('files')[0]);
+                    reader.readAsText(input.prop('files')[0]);
                 }
             } else {
                 alert("This browser does not support HTML5.");
