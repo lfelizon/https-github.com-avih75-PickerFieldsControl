@@ -2,7 +2,12 @@
     "manifestVersion": 1,
     "id": "Multi-Pickers-Fields-Control",
     "version": "1.1.332",
-    "name": "Multi Pickers Fields Control",
+    "name": "Multi-level Cascading Select Fields Control",
+    "description": "Adds a custom control that allows you to configure up to four levels of cascaded select fields.",
+    "publisher": "AllanWalker",
+    "icons": {
+        "default": "img/logo.png"
+    },
     "scopes": [
         "vso.code_full",
         "vso.work",
@@ -12,11 +17,6 @@
         "vso.project",
         "vso.security_manage"
     ],
-    "description": "Pick value from filtered list",
-    "publisher": "AviHadad",
-    "icons": {
-        "default": "img/logo.png"
-    },
     "targets": [{
         "id": "Microsoft.VisualStudio.Services",
         "version": "[15.0,)"
@@ -45,26 +45,26 @@
     },
     "repository": {
         "type": "git",
-        "uri": "https://github.com/avih75/PickerFieldsControl"
+        "uri": "https://github.com/awalkergh/PickerFieldsControl"
     },
     "links": {
         "support": {
-            "uri": "https://github.com/avih75/PickerFieldsControl/issues"
+            "uri": "https://github.com/awalkergh/PickerFieldsControl/issues"
         },
         "license": {
-            "uri": "https://github.com/avih75/PickerFieldsControl/blob/master/LICENSE.md"
+            "uri": "https://github.com/awalkergh/PickerFieldsControl/blob/master/LICENSE.md"
         },
         "privacypolicy": {
-            "uri": "https://github.com/avih75/PickerFieldsControl/blob/master/PRIVACY.md"
+            "uri": "https://github.com/awalkergh/PickerFieldsControl/blob/master/PRIVACY.md"
         },
         "learn": {
-            "uri": "https://github.com/avih75/PickerFieldsControl/blob/master/README.md"
+            "uri": "https://github.com/awalkergh/PickerFieldsControl/blob/master/README.md"
         },
         "repository": {
-            "uri": "https://github.com/avih75/PickerFieldsControl"
+            "uri": "https://github.com/awalkergh/PickerFieldsControl"
         },
         "issues": {
-            "uri": "https://github.com/avih75/PickerFieldsControl/issues"
+            "uri": "https://github.com/awalkergh/PickerFieldsControl/issues"
         }
     },
     "files": [{
