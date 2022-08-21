@@ -7,6 +7,7 @@ node_modules
 scripts/*.js
 typings
 *.vsix
+.typingsrc
 
 # User-specific files
 *.rsuser
@@ -353,3 +354,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
