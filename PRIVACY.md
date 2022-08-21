@@ -4,7 +4,7 @@ We're working hard to protect your privacy, while delivering software that bring
 
 ## Security of Your Information
 
-We are committed to protecting the security of your information. No data is stored by the extension.
+We are committed to protecting the security of your information. No data is stored by this extension.
 
 ## Data for Quality and Reliability Improvments
 
