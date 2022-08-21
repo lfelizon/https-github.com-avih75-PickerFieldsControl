@@ -14,13 +14,15 @@
         - `Plan and track` to target TFS 2017
         - `Azure Boards` to target TFS 2019
     1. Run `grunt package-dev`
-    1. Open a browser and navigate to your ADO organization
+    1. Open a browser and navigate to your ADO organization (e.g. `https://dev.azure.com/<your org name>`)
     1. Open the Marketplace
-    1. Click "Browse local extensions".
-    1. Scroll down and click on the "Manage Extensions".
-    1. Click "Upload new extension".
-    1. Drag and Drop the generated file from your packaged project (vsix).
-    1. Click "Upload".
+    <img src="img/open-marketplace.png" width="250" />
+    1. Click **Publish extensions**
+    <img src="img/publish-extensions.png" width="400" />
+    1. If you have not created a publisher, you must do so before proceeding. You can use the **+ Create publisher** button in the left area of the screen
+    1. Click **+ New extension** and select **Azure DevOps** from the menu
+    1. Drag and Drop the generated VSIX file from your packaged project
+    1. Click the **Upload** button
     1. Hover over the extension when it appears in the list, and click "Install".
 
 This should should install the extension in your collection.  
