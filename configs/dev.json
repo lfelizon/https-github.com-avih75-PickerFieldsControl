@@ -1,5 +1,5 @@
 {
-    "id": "Picker-Fields-Control",
-    "name": "Multi-Pickers Fields Control",
-    "public": true
+    "id": "multilevel-cascading-select-control",
+    "name": "Multilevel Cascading Select Control",
+    "public": false
 }

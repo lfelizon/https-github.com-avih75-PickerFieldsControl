@@ -5,6 +5,6 @@
             "when": "$(basename).ts"
         },
         "**/*.vsix": true,
-        "*.gitignore": true
+        "*.gitignore": false
     }
 }

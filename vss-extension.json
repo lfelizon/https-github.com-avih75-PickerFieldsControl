@@ -1,10 +1,14 @@
 {
     "manifestVersion": 1,
-    "id": "Multi-Pickers-Fields-Control",
-    "version": "1.1.332",
-    "name": "Multi-level Cascading Select Fields Control",
+    "id": "multilevel-cascading-select",
+    "version": "1.2.1",
+    "name": "Multilevel Cascading Select Control",
+    "publisher": "allan-walker",
     "description": "Adds a custom control that allows you to configure up to four levels of cascaded select fields.",
-    "publisher": "AllanWalker",
+    "targets": [{
+        "id": "Microsoft.VisualStudio.Services",
+        "version": "[15.0,)"
+    }],
     "icons": {
         "default": "img/logo.png"
     },
@@ -17,10 +21,6 @@
         "vso.project",
         "vso.security_manage"
     ],
-    "targets": [{
-        "id": "Microsoft.VisualStudio.Services",
-        "version": "[15.0,)"
-    }],
     "tags": [
         "Work Item",
         "Work Item control",
@@ -93,7 +93,7 @@
         }
     ],
     "categories": [
-        "Plan and track"
+        "Azure Boards"
     ],
     "contributions": [{
             "id": "Multi_Pickers_Fields_Control",
