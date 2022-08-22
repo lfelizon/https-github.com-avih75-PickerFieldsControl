@@ -73,10 +73,11 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     let level3List = new Array<FieldValues>();
     let level4List = new Array<FieldValues>();
     let repetedValues = new Array<string>();
-    repetedValues.push(" Duplicated Line where founded in the file ");
+    repetedValues.push(" Duplicate rows were found in the CSV row data ");
     let rows: Array<string> = fileResult.split("\n");
     for (let index = 1; index < rows.length; index++) {
-        const cells = rows[index].split(',');
+        // const cells = rows[index].split(',');
+        const cells = parseCSV(rows[index])
         cells.forEach(cell => {
             cell = CleanCell(cell);
         });
@@ -137,7 +138,7 @@ function MapValues(controlName: string, fileResult: string, infos: RepoInfo) {
     if (repetedValues.length > 1)
         alert(repetedValues.length - 1 + repetedValues.toString());
     else
-        alert("No duplicated Line where found in the file");
+        alert("No duplicate lines found in CSV; continuing...");
     PushDoc(controlName, fieldsValuesList, fileResult, infos);
 }
 function PushDoc(controlName: string, fieldsValuesList, fileResult: string, infos: RepoInfo) {
@@ -161,30 +162,36 @@ function PushDoc(controlName: string, fieldsValuesList, fileResult: string, info
                 controlList.push(control);
                 AddNewItemList(control, controlList);
                 StoreControlList(controlList);
-                alert(controlName + " Value list created.");
+                alert("Datasource [" + controlName + "] value lists created.");
             }
             else {
-                alert(controlName + " Value list updated.");
+                alert("Datasource [" + controlName + "] value lists created.");
             }
         });
         if (infos != undefined)
             PushToGit(fileResult, controlName, infos);
     })
 }
+
+/**
+ * 
+ * @param control Adds detail information about a datasource to a `ul` for display to users..
+ * @param controlList - The `ul` to add the datasource details to
+ */
 function AddNewItemList(control: ControlsNames, controlList: ControlsNames[]) {
-    let $ulList = $("#CollectionControlList");
-    let $il = $("<li />");
-    $il.text(`scope : ${control.projectName}, control name : ${control.controlName}, file name : ${control.fileName}`);
+    let $ul = $("#CollectionControlList");
+    let $li = $("<li />");
+    $li.text(`scope : ${control.projectName}, datasource name : ${control.controlName}, file name : ${control.fileName}`);
     let $button = $("<button />");
-    $button.text("X");
+    $button.text("Remove");
     $button.css("font-size", "small");
     $button.css("padding-left", "10px");
     $button.css("margin-left", "10px");
     $button.css("width", "10px");
     $button.css("hight", "10px");
-    $button.click(() => DeleteControl($il, control, controlList));
-    $il.append($button);
-    $ulList.append($il);
+    $button.click(() => DeleteControl($li, control, controlList));
+    $li.append($button);
+    $ul.append($li);
 }
 function PushToGit(refName: string, controlName: string, infos: RepoInfo) {// projectName: string, repoName: string
     let git: GitRestClient.GitHttpClient4 = GitRestClient.getClient();
@@ -268,5 +275,25 @@ function TextUpload() {
 function checkIfNameOk(fileName: string) {
     return true
 }
+
+/**
+ * Parses a CSV row in string format, to an array of string values (columns).
+ * @author Allan Walker
+ * @param {string} content - String value to parse as CSV row
+ * @returns string array of column values
+ * @example
+ * parseCSV('foo,"bar,baz"')
+ */
+function parseCSV(content:string):any[string]{
+    let colValues: Array<string> = new Array<string>();
+    let uncleanColValues = content.split("\n").map(ar=>ar.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(refi=>refi.replace(/[\x00-\x08\x0E-\x1F\x7F-\uFFFF]/g, "").trim()));
+    uncleanColValues[0].forEach((value, key) => {
+        // string.replaceAll only works with ES2020.String so we will use an old fashion regex instead
+        // colValues.push(value.replaceAll('"', ''))
+        let re = /"/gi
+        colValues.push(value.replace(re, ''))
+    });  
+    return colValues;
+  }
 VSS.register(VSS.getContribution().id, provider);
 InitP();
