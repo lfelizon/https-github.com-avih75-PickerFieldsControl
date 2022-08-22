@@ -1,10 +1,10 @@
 {
     "manifestVersion": 1,
-    "id": "multilevel-cascading-select",
+    "id": "cascading-select-control",
     "version": "1.2.1",
-    "name": "Multilevel Cascading Select Control",
+    "name": "Cascading Select Control",
     "publisher": "allan-walker",
-    "description": "Adds a custom control that allows you to configure up to four levels of cascaded select fields.",
+    "description": "Adds a custom control that allows you to configure up to four levels of cascading select fields.",
     "targets": [{
         "id": "Microsoft.VisualStudio.Services",
         "version": "[15.0,)"
@@ -96,19 +96,19 @@
         "Azure Boards"
     ],
     "contributions": [{
-            "id": "Multi_Pickers_Fields_Control",
-            "description": "Group values from several fields, and calculate new value. regarding the requested functionality",
+            "id": "cascading-select-contributions",
+            "description": "Add cascading selects to your form.",
             "type": "ms.vss-work-web.work-item-form-control",
             "targets": [
                 "ms.vss-work-web.work-item-form"
             ],
             "properties": {
-                "name": "Multi Pickers Fields with dependencies",
+                "name": "Cascading Select Control",
                 "uri": "index.html",
                 "inputs": [{
                         "id": "ControlName",
-                        "name": "Control Name",
-                        "description": "This field get the controll name, use for label and getting the infos from storage, as the csv file name",
+                        "name": "Datasource name",
+                        "description": "The name of the datasource to use for these cascading selects.",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
@@ -117,8 +117,8 @@
                     },
                     {
                         "id": "FieldName1",
-                        "name": "Field Name 1",
-                        "description": "The first field name",
+                        "name": "Level 1 field label",
+                        "description": "The label to give the level 1 select.",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
@@ -127,8 +127,8 @@
                     },
                     {
                         "id": "Field1",
-                        "name": "Field vale 1",
-                        "description": "The first field workItem Field",
+                        "name": "Level 1 field name",
+                        "description": "The work item field to bind to the level 1 select.",
                         "type": "WorkItemField",
                         "properties": {
                             "workItemFieldTypes": [
@@ -143,8 +143,8 @@
                         }
                     }, {
                         "id": "Field1Hide",
-                        "name": "Field 1 Hide",
-                        "description": "Hide on and off the first select hide",
+                        "name": "Hide level 1 select",
+                        "description": "Hide the level 1 select?",
                         "inputMode": "CheckBox",
                         "validation": {
                             "dataType": "Boolean"
@@ -152,8 +152,8 @@
                     },
                     {
                         "id": "FieldName2",
-                        "name": "Field Name 2",
-                        "description": "The second field name",
+                        "name": "Level 2 field label",
+                        "description": "The label to gie the level 2 select.",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
@@ -162,8 +162,8 @@
                     },
                     {
                         "id": "Field2",
-                        "name": "Field value 2",
-                        "description": "The second field workItem Field",
+                        "name": "Level 2 field name",
+                        "description": "The work item field to bind to the level 2 select.",
                         "type": "WorkItemField",
                         "properties": {
                             "workItemFieldTypes": [
@@ -178,8 +178,8 @@
                         }
                     }, {
                         "id": "Field2Hide",
-                        "name": "Field 2 Hide",
-                        "description": "Hide on and off the second select hide",
+                        "name": "Hide level 2 select",
+                        "description": "Hide the level 2 select?",
                         "inputMode": "CheckBox",
                         "validation": {
                             "dataType": "Boolean"
@@ -187,8 +187,8 @@
                     },
                     {
                         "id": "FieldName3",
-                        "name": "Field Name 3",
-                        "description": "The therd field name",
+                        "name": "Level 3 field label",
+                        "description": "The label to gie the level 3 select.",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
@@ -197,8 +197,8 @@
                     },
                     {
                         "id": "Field3",
-                        "name": "Field value 3",
-                        "description": "The therd field workItem Field",
+                        "name": "Level 3 field name",
+                        "description": "The work item field to bind to the level 3 select.",
                         "type": "WorkItemField",
                         "properties": {
                             "workItemFieldTypes": [
@@ -213,8 +213,8 @@
                         }
                     }, {
                         "id": "Field3Hide",
-                        "name": "Field 3 Hide",
-                        "description": "Hide on and off the therd select hide",
+                        "name": "Hide level 3 select",
+                        "description": "Hide the level 3 select?",
                         "inputMode": "CheckBox",
                         "validation": {
                             "dataType": "Boolean"
@@ -222,8 +222,8 @@
                     },
                     {
                         "id": "FieldName4",
-                        "name": "Field Name 4",
-                        "description": "The forth field name",
+                        "name": "Level 4 field label",
+                        "description": "The label to gie the level 4 select.",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
@@ -232,8 +232,8 @@
                     },
                     {
                         "id": "Field4",
-                        "name": "Field value 4",
-                        "description": "The forth field workItem Field",
+                        "name": "Level 4 field name",
+                        "description": "Hide the level 4 select?",
                         "type": "WorkItemField",
                         "properties": {
                             "workItemFieldTypes": [
@@ -248,7 +248,7 @@
                         }
                     }, {
                         "id": "Field4Hide",
-                        "name": "Field 4 Hide",
+                        "name": "Hide level 4 select",
                         "description": "Hide on and off the fourth select hide",
                         "inputMode": "CheckBox",
                         "validation": {
@@ -256,9 +256,19 @@
                         }
                     },
                     {
+                        "id": "ViewOption",
+                        "name": "Show number of inline selects",
+                        "description": "How many selects to show on a single line before wrapping? (default: 4)",
+                        "type": "TextArea",
+                        "validation": {
+                            "dataType": "String",
+                            "isRequired": false
+                        }
+                    },
+                    {
                         "id": "SummarizeToPath",
-                        "name": "Summarize to a Path view",
-                        "description": "The forth fields toggether as path nice to use for querys and sorts",
+                        "name": "Cascaded values summary",
+                        "description": "Optionally select a field to display a concatenated path-like value of the selected cascaded values.",
                         "type": "WorkItemField",
                         "properties": {
                             "workItemFieldTypes": [
@@ -274,24 +284,14 @@
                     },
                     {
                         "id": "Reposetory",
-                        "name": "Backup Reposetory",
+                        "name": "Backup Repository",
                         "description": "This field get the project name and the repository name, use only for push the csv content to version control as backup",
                         "type": "TextArea",
                         "validation": {
                             "dataType": "String",
                             "isRequired": false
                         }
-                    },
-                    {
-                        "id": "ViewOption",
-                        "name": "View Option",
-                        "description": "This field get the Number of combox shows in one line 1-4",
-                        "type": "TextArea",
-                        "validation": {
-                            "dataType": "String",
-                            "isRequired": false
-                        }
-                    },
+                    }, 
                     {
                         "id": "PrivateBehaviure",
                         "name": "Private Behaviore",
@@ -307,28 +307,28 @@
         },
         {
             "id": "myAction",
-            "description": "Run an Upload file in work item actions menus",
+            "description": "Upload and verify a CSV datasource.",
             "type": "ms.vss-web.action",
             "targets": [
                 "ms.vss-work-web.work-item-context-menu"
             ],
             "properties": {
-                "text": "Upload Picker csv",
-                "title": "Upload Picker control CSV Dependencies file",
+                "text": "Upload CSV datasource",
+                "title": "Upload CSV datasource file",
                 "icon": "img/icon.png",
-                "groupId": "Picker",
+                "groupId": "cascading-select",
                 "uri": "action.html"
             }
         },
         {
-            "id": "configureMultiPickerCSV",
+            "id": "configure-cascading-select-hub",
             "type": "ms.vss-web.hub",
-            "description": "Adds a 'Multi picker Fields Map Configuration' hub to the work Item configuration hub group.",
+            "description": "Adds a 'Cascading Select' hub to the work Item configuration hub group.",
             "targets": [
                 "ms.vss-web.collection-admin-hub-group"
             ],
             "properties": {
-                "name": "Multi Picker",
+                "name": "Cascading Select",
                 "uri": "configCsvHub.html",
                 "order": 99
             }
